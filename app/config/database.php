@@ -1,6 +1,6 @@
 <?php
 
-define('BASEURL', 'https://localhost/project-rental-mobil/views/home/index.php');
+define('BASEURL', 'https://localhost/project-rental-mobil/app/views/home/index.php');
 
 $server = "localhost";
 $user = "root";
