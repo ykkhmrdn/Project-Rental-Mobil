@@ -1,3 +1,24 @@
+<?php
+
+include("/xampp/htdocs/project-rental-mobil/app/config/database.php");
+
+if (!isset($_GET['id'])) {
+    header('Location: ./user.php');
+}
+
+$id = $_GET['id'];
+
+$sql = "SELECT * FROM viewusers WHERE id=$id limit 1";
+$query = mysqli_query($db, $sql);
+$viewusers = mysqli_fetch_array($query);
+
+if (mysqli_num_rows($query) < 1) {
+    die("data tidak ditemukan...");
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,8 +114,8 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
 
-          <!-- Main content -->
-          <section class="content">
+            <!-- Main content -->
+            <section class="content">
                 <div class="container-fluid">
                     <!-- User form -->
                     <div class="card">
@@ -102,75 +123,85 @@
                             <h3 class="card-title">Edit User</h3>
                         </div>
                         <div class="card-body">
-                            <form action="update-user.php" method="POST" enctype="multipart/form-data">
+                            <form action="./proses-edit.php" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="id" value="<?php echo $viewusers['id'] ?>">
                                 <!-- NIK input -->
                                 <div class="form-group">
-                                    <label for="nik">NIK</label>
-                                    <input type="text" class="form-control" id="nik" name="nik" placeholder="Enter NIK">
+                                    <label for="NIK">NIK</label>
+                                    <input type="text" class="form-control" id="NIK" name="NIK" placeholder="Isikan NIK" value="<?php echo $viewusers['NIK'] ?>" required>
                                 </div>
 
                                 <!-- Name input -->
                                 <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
+                                    <label for="Nama">Nama</label>
+                                    <input type="text" class="form-control" id="Nama" name="Nama" placeholder="Isikan nama" value="<?php echo $viewusers['Nama'] ?>" required>
                                 </div>
 
                                 <!-- Username input -->
                                 <div class="form-group">
-                                    <label for="username">Username</label>
-                                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+                                    <label for="NamaUser">Username</label>
+                                    <input type="text" class="form-control" id="NamaUser" name="NamaUser" placeholder="Isikan Username" value="<?php echo $viewusers['NamaUser'] ?>" required>
                                 </div>
 
                                 <!-- Password input -->
                                 <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+                                    <label for="Password">Password</label>
+                                    <input type="password" class="form-control" id="Password" name="Password" placeholder="Enter password" value="<?php echo $viewusers['Password'] ?>" required>
                                 </div>
 
                                 <!-- Gender input -->
                                 <div class="form-group">
-                                    <label for="gender">Gender</label>
-                                    <select class="form-control" id="gender" name="gender">
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
+                                    <label for="JenisKelamin">Jenis Kelamin</label>
+                                    <select class="form-control" id="JenisKelamin" name="JenisKelamin">
+                                        <option value="L">Laki-Laki</option>
+                                        <option value="P">Perempuan</option>
                                     </select>
                                 </div>
 
                                 <!-- Address input -->
                                 <div class="form-group">
-                                    <label for="address">Address</label>
-                                    <textarea class="form-control" id="address" name="address" placeholder="Enter address"></textarea>
+                                    <label for="Alamat">Alamat</label>
+                                    <textarea class="form-control" id="Alamat" name="Alamat" placeholder="Isikan Alamat" value="<?php echo $viewusers['Alamat'] ?>" required></textarea>
                                 </div>
 
                                 <!-- Phone number input -->
                                 <div class="form-group">
-                                    <label for="phone">Phone Number</label>
-                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter phone number">
+                                    <label for="NoTelp">No Telp</label>
+                                    <input type="text" class="form-control" id="NoTelp" name="NoTelp" placeholder="Isikan No Telp" value="<?php echo $viewusers['NoTelp'] ?>" required>
                                 </div>
 
                                 <!-- Profile picture input -->
                                 <div class="form-group">
-                                    <label for="profile_picture">Profile Picture</label>
-                                    <input type="file" class="form-control-file" id="profile_picture" name="profile_picture">
+                                    <label for="Foto">Foto Pengguna</label>
+                                    <input type="file" class="form-control-file" id="Foto" name="Foto">
                                 </div>
 
                                 <!-- Role input -->
                                 <div class="form-group">
                                     <label for="role">Role</label>
-                                    <select class="form-control" id="role" name="role">
-                                        <option value="admin">Admin</option>
-                                        <option value="user">User</option>
+                                    <select class="form-control" id="role" name="RoleId">
+                                        <option value="1">Admin</option>
+                                        <option value="2">Karyawan</option>
+                                        <option value="3">Pelanggan</option>
                                     </select>
                                 </div>
 
                                 <!-- Activation input -->
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="activation" name="activation">
-                                    <label class="form-check-label" for="activation">Activate User</label>
+                                    <td>
+                                        <!-- Active -->
+                                        <select class="browser-default custom-select" name="IsActive" id="IsActive">
+                                            <option value="1">Aktif</option>
+                                            <option value="0" selected>Tidak Aktif</option>
+                                        </select>
+                                    </td>
                                 </div>
 
                                 <!-- Submit button -->
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <p>
+                                    <input type="submit" value="Simpan" name="simpan">
+                                    <a href="./user.php"></a>
+                                </p>
                             </form>
                         </div>
                     </div>

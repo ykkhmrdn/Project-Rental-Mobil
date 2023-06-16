@@ -1,3 +1,5 @@
+<?php include("/xampp/htdocs/project-rental-mobil/app/config/database.php"); ?>
+
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://localhost/project-rental-mobil/app/css/style.css">
@@ -91,7 +93,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Mobil 1</h5>
                         <p class="card-text">Deskripsi mobil 1.</p>
-                        <a href="#" class="btn btn-primary">Sewa Sekarang</a>
+                        <a href="#" class="btn btn-primary" onclick="checkLogin()">Sewa Sekarang</a>
                     </div>
                 </div>
             </div>
@@ -101,7 +103,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Mobil 2</h5>
                         <p class="card-text">Deskripsi mobil 2.</p>
-                        <a href="#" class="btn btn-primary">Sewa Sekarang</a>
+                        <a href="#" class="btn btn-primary" onclick="checkLogin()">Sewa Sekarang</a>
                     </div>
                 </div>
             </div>
@@ -111,7 +113,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Mobil 3</h5>
                         <p class="card-text">Deskripsi mobil 3.</p>
-                        <a href="#" class="btn btn-primary">Sewa Sekarang</a>
+                        <a href="#" class="btn btn-primary" onclick="checkLogin()">Sewa Sekarang</a>
                     </div>
                 </div>
             </div>
@@ -121,7 +123,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Mobil 4</h5>
                         <p class="card-text">Deskripsi mobil 4.</p>
-                        <a href="#" class="btn btn-primary">Sewa Sekarang</a>
+                        <a href="#" class="btn btn-primary" onclick="checkLogin()">Sewa Sekarang</a>
                     </div>
                 </div>
             </div>
@@ -177,4 +179,23 @@
     <!-- Script -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+    <script>
+    function checkLogin() {
+        // Periksa apakah pengguna sudah login atau belum
+        // Ganti 'isLoggedIn' dengan kondisi login yang sesuai dari backend Anda
+        var isLoggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
+        
+        if (isLoggedIn) {
+            // Jika pengguna sudah login, lanjutkan ke halaman sewa mobil
+            window.location.href = "link-halaman-sewa-mobil";
+        } else {
+            // Jika pengguna belum login, tampilkan peringatan dan arahkan ke halaman login/registrasi
+            alert("Anda harus login atau daftar terlebih dahulu untuk menyewa mobil.");
+            window.location.href = "/project-rental-mobil/app/views/auth/login.php";
+        }
+    }
+</script>
+
+    
 </body>
