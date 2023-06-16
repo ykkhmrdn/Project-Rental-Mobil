@@ -1,3 +1,22 @@
+<?php
+
+include("/xampp/htdocs/project-rental-mobil/app/config/database.php");
+
+if (!isset($_GET['id'])) {
+    header('Location: ./data-mobil.php');
+}
+
+$id = $_GET['id'];
+
+$sql = "SELECT * FROM viewmobil WHERE id=$id limit 1";
+$query = mysqli_query($db, $sql);
+$viewmobil = mysqli_fetch_array($query);
+
+if (mysqli_num_rows($query) < 1) {
+    die("data tidak ditemukan...");
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,7 +81,7 @@
                                     <path d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404.5.25.855.715.965 1.262l.335 1.679c.033.161.049.325.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.807.807 0 0 0 .381-.404l.792-1.848ZM4.82 3a1.5 1.5 0 0 0-1.379.91l-.792 1.847a1.8 1.8 0 0 1-.853.904.807.807 0 0 0-.43.564L1.03 8.904a1.5 1.5 0 0 0-.03.294v.413c0 .796.62 1.448 1.408 1.484 1.555.07 3.786.155 5.592.155 1.806 0 4.037-.084 5.592-.155A1.479 1.479 0 0 0 15 9.611v-.413c0-.099-.01-.197-.03-.294l-.335-1.68a.807.807 0 0 0-.43-.563 1.807 1.807 0 0 1-.853-.904l-.792-1.848A1.5 1.5 0 0 0 11.18 3H4.82Z" />
                                 </svg>
                                 <p>
-                                    Edit Mobil
+                                    Data Mobil
                                 </p>
                             </a>
                         </li>
@@ -70,7 +89,7 @@
                             <a href="./edit-user.php" class="nav-link">
                                 <i class="nav-icon bi bi-person"></i>
                                 <p>
-                                    Edit User
+                                    Data User
                                 </p>
                             </a>
                         </li>
@@ -78,7 +97,7 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-file-earmark-text"></i>
                                 <p>
-                                    Edit Transaksi
+                                    Data Transaksi
                                 </p>
                             </a>
                         </li>
@@ -103,55 +122,61 @@
                                 <div class="card-header">
                                     <h3 class="card-title">Edit Mobil Form</h3>
                                 </div>
-                                <form role="form">
+                                <form action="./proses-edit-mobil.php" method="POST" name="simpan" enctype="multipart/form-data">
+                                    <input type="hidden" name="id" value="<?php echo $viewmobil['id'] ?>">
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label for="id">ID</label>
-                                            <input type="text" class="form-control" id="id" placeholder="Enter ID">
+                                            <label for="NoPlat">No Plat</label>
+                                            <input type="text" class="form-control" id="NoPlat" placeholder="Enter No Plat" name="NoPlat" value="<?php echo $viewmobil['NoPlat'] ?>" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="no_plat">No Plat</label>
-                                            <input type="text" class="form-control" id="no_plat" placeholder="Enter No Plat">
+                                            <label for="KdMerk">Kode Merek</label>
+                                            <input type="text" name="KdMerk" class="form-control" id="KdMerk" placeholder="Enter Kode Merek" value="<?php echo $viewmobil['KdMerk'] ?>" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="kode_merek">Kode Merek</label>
-                                            <input type="text" class="form-control" id="kode_merek" placeholder="Enter Kode Merek">
+                                            <label for="IdType">ID Type</label>
+                                            <input type="text" name="IdType" class="form-control" id="IdType" placeholder="Enter ID Type" value="<?php echo $viewmobil['IdType'] ?>" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="id_type">ID Type</label>
-                                            <input type="text" class="form-control" id="id_type" placeholder="Enter ID Type">
+                                            <label for="StatusRental">Status Rental</label>
+                                            <select class="form-control" id="StatusRental" name="StatusRental" value="<?php echo $viewmobil['StatusRental'] ?>" required>
+                                                <option value="Jalan">Jalan</option>
+                                                <option value="Dipesan">Dipesan</option>
+                                                <option value="Kosong">Kosong</option>
+                                            </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="status_rental">Status Rental</label>
-                                            <input type="text" class="form-control" id="status_rental" placeholder="Enter Status Rental">
+                                            <label for="HargaSewa">Harga Sewa</label>
+                                            <input type="text" name="HargaSewa" class="form-control" id="HargaSewa" placeholder="Enter Harga Sewa" value="<?php echo $viewmobil['HargaSewa'] ?>" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="harga_sewa">Harga Sewa</label>
-                                            <input type="text" class="form-control" id="harga_sewa" placeholder="Enter Harga Sewa">
+                                            <label for="FotoMobil">Foto Mobil</label>
+                                            <input type="file" class="form-control" id="FotoMobil" name="FotoMobil">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="NmMerk">Nama Merek</label>
+                                            <input type="text" name="NmMerk" class="form-control" id="NmMerk" placeholder="Enter Nama Merek" value="<?php echo $viewmobil['NmMerk'] ?>" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="foto_mobil">Foto Mobil</label>
-                                            <input type="file" class="form-control" id="foto_mobil">
+                                            <label for="NmType">Nama Type</label>
+                                            <input type="text" name="NmType" class="form-control" id="NmType" placeholder="Enter Nama Type" value="<?php echo $viewmobil['NmType'] ?>" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="nama_merek">Nama Merek</label>
-                                            <input type="text" class="form-control" id="nama_merek" placeholder="Enter Nama Merek">
+                                            <label for="JenisMobil">Jenis Mobil</label>
+                                            <input type="text" name="JenisMobil" class="form-control" id="JenisMobil" placeholder="Enter Jenis Mobil" value="<?php echo $viewmobil['JenisMobil'] ?>" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="nama_type">Nama Type</label>
-                                            <input type="text" class="form-control" id="nama_type" placeholder="Enter Nama Type">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="jenis_mobil">Jenis Mobil</label>
-                                            <input type="text" class="form-control" id="jenis_mobil" placeholder="Enter Jenis Mobil">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="transmisi_mobil">Transmisi Mobil</label>
-                                            <input type="text" class="form-control" id="transmisi_mobil" placeholder="Enter Transmisi Mobil">
+                                            <label for="Transmisi">Transmisi Mobil</label>
+                                            <select class="form-control" id="Transmisi" name="Transmisi" value="<?php echo $viewmobil['Transmisi'] ?>" required>
+                                                <option value="Manual">Manual</option>
+                                                <option value="CVT">CVT</option>
+                                                <option value="Matic">Matic</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        <button type="submit" class="btn btn-primary" name="simpan">Submit</button>
                                     </div>
                                 </form>
                             </div>
