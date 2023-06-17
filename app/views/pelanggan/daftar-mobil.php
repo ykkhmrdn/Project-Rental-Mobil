@@ -1,20 +1,17 @@
-<?php include("/xampp/htdocs/project-rental-mobil/app/config/database.php");
-
+<?php
+include("/xampp/htdocs/project-rental-mobil/app/config/database.php");
 
 $sql = "SELECT m.*, merk.NmMerk, type.NmType FROM mobil m 
         JOIN merk ON m.KdMerk = merk.KdMerk 
         JOIN type ON m.IdType = type.IdType";
 $result = mysqli_query($db, $sql);
-
-
-
 ?>
 
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://localhost/project-rental-mobil/app/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-    <title>JAVA ELLTRANS Car Rental</title>
+    <title>Daftar Mobil | JAVA ELLTRANS Car Rental</title>
 </head>
 
 
@@ -27,10 +24,13 @@ $result = mysqli_query($db, $sql);
                 <ul class="navbar-nav text-center"> <!-- Added text-center class -->
                     <a class="navbar-brand" href="#"> <img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="" height="30px"></a>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../about/about.php">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="./daftar-mobil.php">Koleksi Mobil</a>
                     </li>
 
                 </ul>
@@ -48,89 +48,44 @@ $result = mysqli_query($db, $sql);
 
     <!-- End Navbar -->
 
-    <!-- Jumbotron -->
-    <div class="jumbotron">
-        <div class="container">
-            <h1 class="display-3">JAVA ELLTRANS <br> Car Rental</h1>
-            <p class="lead">Sewa mobil berkualitas dengan harga terjangkau!</p>
-        </div>
-    </div>
-
-    <!-- Kenapa Memilih Kami -->
-    <section class="container reason">
-        <div class="row justify-content-center">
-            <div class="col-lg-10 col-md-6">
-                <div class="card h-100">
-                    <div class="card-body text-center">
-                        <h1 class="card-title">Kenapa Memilih Kami?</h1>
-                        <div class="row">
-                            <div class="col-lg-4 mt-5">
-                                <div class="card-text">
-                                    <img src="https://localhost/project-rental-mobil/app/img/assets/harga terjangkau.png" alt="">
-                                    <h3>Harga Terjangkau</h3>
-                                    <p class="card-text">Kami menyediakan berbagai pilihan mobil dengan berbagai jenis dan merk terkemuka.</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 mt-5">
-                                <div class="card-text">
-                                    <img src="https://localhost/project-rental-mobil/app/img/assets/harga terjangkau.png" alt="">
-                                    <h3>Pelayanan Prima</h3>
-                                    <p class="card-text">Costumer sevice kami siap melayani Anda kapan pun. Dan siap dengan media apapun, mulai dari via SMS, Whatsapp, E-mail, maupun telepon secara langsung.</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 mt-5">
-                                <div class="card-text">
-                                    <img src="https://localhost/project-rental-mobil/app/img/assets/harga terjangkau.png" alt="">
-                                    <h3>Kualitas Terbaik</h3>
-                                    <p class="card-text">Perusahaan kami didukung dengan tim yang profesional dan dikelola oleh SDM pilihan serta unit mobil yang variatif, mulai dari city car, sampai mobil rombongan dan mobil mewah untuk pengantin.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
 
     <!-- Daftar Mobil -->
-
     <section class="container car-collection">
-    <h2 class="text-center pb-3">Koleksi Mobil Kami</h2>
-    <div class="row justify-content-center">
-
-        <?php
-        while ($row = mysqli_fetch_assoc($result)) {
-            $gambar = $row['FotoMobil'];
-            $NoPlat = $row['NoPlat'];
-            $statusRental = $row['StatusRental'];
-            $hargaSewa = $row['HargaSewa'];
-            $merk = $row['NmMerk'];
-            $type = $row['NmType'];
-            $transmisi = $row['Transmisi'];
-        ?>
-
-            <div class="col-lg-3 col-md-6 mt-5">
-                <div class="card">
-                    <img src="https://localhost/project-rental-mobil/app/img/assets/<?php echo $gambar; ?>" class="card-img-top img-fluid rounded foto-mobil" alt="<?php echo $NoPlat; ?>">
-                    <div class="card-body">
-                        <h5 class="card-title"><?php echo $type; ?></h5>
-                        <p class="card-text">Status Rental: <?php echo $statusRental; ?></p>
-                        <p class="card-text">Harga Sewa: <?php echo $hargaSewa; ?></p>
-                        <p class="card-text">Merk: <?php echo $merk; ?></p>
-                        <p class="card-text">No Plat: <?php echo $NoPlat; ?></p>
-                        <p class="card-text">Transmisi: <?php echo $transmisi; ?></p>
-                        <a href="../form/booking_form.php" class="btn btn-primary btn-booking" onclick="checkLogin()">Sewa Sekarang</a>
+        <h2 class="text-center pb-3 mt-5">Koleksi Mobil Kami</h2>
+        <div class="row justify-content-center">
+            <?php
+            while ($row = mysqli_fetch_assoc($result)) {
+                $gambar = $row['FotoMobil'];
+                $NoPlat = $row['NoPlat'];
+                $statusRental = $row['StatusRental'];
+                $hargaSewa = $row['HargaSewa'];
+                $merk = $row['NmMerk'];
+                $type = $row['NmType'];
+                $transmisi = $row['Transmisi'];
+            ?>
+                <div class="col-lg-3 col-md-6 mt-5">
+                    <div class="card">
+                        <img src="https://localhost/project-rental-mobil/app/img/assets/<?php echo $gambar; ?>" class="card-img-top img-fluid rounded foto-mobil" alt="<?php echo $NoPlat; ?>">
+                        <div class="card-body">
+                            <h5 class="card-title"><?php echo $type; ?></h5>
+                            <p class="card-text">No Plat: <?php echo $NoPlat; ?></p>
+                            <p class="card-text">Status Rental: <?php echo $statusRental; ?></p>
+                            <p class="card-text">Harga Sewa: <?php echo $hargaSewa; ?></p>
+                            <p class="card-text">Merk: <?php echo $merk; ?></p>
+                            <p class="card-text">Type: <?php echo $type; ?></p>
+                            <p class="card-text">Transmisi: <?php echo $transmisi; ?></p>
+                            <a href="../form/booking_form.php?noPlat=<?php echo $NoPlat; ?>" class="btn btn-primary">Pesan Sekarang</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        <?php
-        }
-        ?>
+            <?php
+            }
+            ?>
+        </div>
+    </section>
+    <!-- End Daftar Mobil -->
 
-    </div>
-</section>
-<!-- End Daftar Mobil -->
     <!-- Footer -->
     <footer class="footer">
         <div class="container">

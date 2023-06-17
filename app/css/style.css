@@ -118,3 +118,19 @@
   margin-top: 100px;
   margin-bottom: 165px;
 }
+
+
+/* Daftar Mobil */
+
+.btn-booking{
+    background-color: #025464;
+}
+.btn-booking:hover {
+    background-color: #E8AA42;
+}
+
+
+
+.foto-mobil {
+  height: 200px; /* Atur tinggi foto sesuai kebutuhan */
+}

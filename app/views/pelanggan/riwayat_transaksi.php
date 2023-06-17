@@ -23,6 +23,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="../about/about.php">About</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./daftar-mobil.php">Koleksi Mobil</a>
+                    </li>
                 </ul>
             </div>
 
