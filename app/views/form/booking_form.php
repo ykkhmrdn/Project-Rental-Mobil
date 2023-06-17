@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#">Home</a>
+                        <a class="nav-link" aria-current="page" href="../home/index.php">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../about/about.php">About</a>

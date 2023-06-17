@@ -96,41 +96,49 @@ $result = mysqli_query($db, $sql);
     <!-- Daftar Mobil -->
 
     <section class="container car-collection">
-    <h2 class="text-center pb-3">Koleksi Mobil Kami</h2>
-    <div class="row justify-content-center">
+        <h2 class="text-center pb-3">Koleksi Mobil Kami</h2>
+        <div class="row justify-content-center">
 
-        <?php
-        while ($row = mysqli_fetch_assoc($result)) {
-            $gambar = $row['FotoMobil'];
-            $NoPlat = $row['NoPlat'];
-            $statusRental = $row['StatusRental'];
-            $hargaSewa = $row['HargaSewa'];
-            $merk = $row['NmMerk'];
-            $type = $row['NmType'];
-            $transmisi = $row['Transmisi'];
-        ?>
+            <?php
+            while ($row = mysqli_fetch_assoc($result)) {
+                $gambar = $row['FotoMobil'];
+                $NoPlat = $row['NoPlat'];
+                $statusRental = $row['StatusRental'];
+                $hargaSewa = $row['HargaSewa'];
+                $merk = $row['NmMerk'];
+                $type = $row['NmType'];
+                $transmisi = $row['Transmisi'];
+            ?>
 
-            <div class="col-lg-3 col-md-6 mt-5">
-                <div class="card">
-                    <img src="https://localhost/project-rental-mobil/app/img/assets/<?php echo $gambar; ?>" class="card-img-top img-fluid rounded foto-mobil" alt="<?php echo $NoPlat; ?>">
-                    <div class="card-body">
-                        <h5 class="card-title"><?php echo $type; ?></h5>
-                        <p class="card-text">Status Rental: <?php echo $statusRental; ?></p>
-                        <p class="card-text">Harga Sewa: <?php echo $hargaSewa; ?></p>
-                        <p class="card-text">Merk: <?php echo $merk; ?></p>
-                        <p class="card-text">No Plat: <?php echo $NoPlat; ?></p>
-                        <p class="card-text">Transmisi: <?php echo $transmisi; ?></p>
-                        <a href="../form/booking_form.php" class="btn btn-primary btn-booking" onclick="checkLogin()">Sewa Sekarang</a>
+                <div class="col-lg-3 col-md-6 mt-5">
+                    <div class="card">
+                        <img src="https://localhost/project-rental-mobil/app/img/assets/<?php echo $gambar; ?>" class="card-img-top img-fluid rounded foto-mobil" alt="<?php echo $NoPlat; ?>">
+                        <div class="card-body">
+                            <h5 class="card-title"><?php echo $type; ?></h5>
+                            <p class="card-text">Status Rental: <?php echo $statusRental; ?></p>
+                            <p class="card-text">Harga Sewa: <?php echo $hargaSewa; ?></p>
+                            <p class="card-text">Merk: <?php echo $merk; ?></p>
+                            <p class="card-text">No Plat: <?php echo $NoPlat; ?></p>
+                            <p class="card-text">Transmisi: <?php echo $transmisi; ?></p>
+                            <?php
+                            // Check if the user is logged in
+                            if (isset($_SESSION["user_id"])) {
+                                echo '<a href="../form/booking_form.php" class="btn btn-primary btn-booking">Sewa Sekarang</a>';
+                            } else {
+                                echo '<a href="../auth/login.php" class="btn btn-primary btn-booking" onclick="showLoginAlert()">Sewa Sekarang</a>';
+                            }
+                            ?>
+                        </div>
                     </div>
                 </div>
-            </div>
-        <?php
-        }
-        ?>
 
-    </div>
-</section>
-<!-- End Daftar Mobil -->
+            <?php
+            }
+            ?>
+
+        </div>
+    </section>
+    <!-- End Daftar Mobil -->
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -182,21 +190,10 @@ $result = mysqli_query($db, $sql);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
     <script>
-        function checkLogin() {
-            // Periksa apakah pengguna sudah login atau belum
-            // Ganti 'isLoggedIn' dengan kondisi login yang sesuai dari backend Anda
-            var isLoggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
-
-            if (isLoggedIn) {
-                // Jika pengguna sudah login, lanjutkan ke halaman sewa mobil
-                window.location.href = "link-halaman-sewa-mobil";
-            } else {
-                // Jika pengguna belum login, tampilkan peringatan dan arahkan ke halaman login/registrasi
-                alert("Anda harus login atau daftar terlebih dahulu untuk menyewa mobil.");
-                window.location.href = "/project-rental-mobil/app/views/auth/login.php";
-            }
-        }
-    </script>
+    function showLoginAlert() {
+        alert("Anda harus login terlebih dahulu untuk melakukan pemesanan.");
+    }
+</script>
 
 
 </body>

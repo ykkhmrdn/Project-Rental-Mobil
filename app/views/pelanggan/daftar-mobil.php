@@ -51,7 +51,7 @@ $result = mysqli_query($db, $sql);
 
 
     <!-- Daftar Mobil -->
-    <section class="container car-collection">
+    <section class="container car-collection daftar-mobil">
         <h2 class="text-center pb-3 mt-5">Koleksi Mobil Kami</h2>
         <div class="row justify-content-center">
             <?php
@@ -75,7 +75,7 @@ $result = mysqli_query($db, $sql);
                             <p class="card-text">Merk: <?php echo $merk; ?></p>
                             <p class="card-text">Type: <?php echo $type; ?></p>
                             <p class="card-text">Transmisi: <?php echo $transmisi; ?></p>
-                            <a href="../form/booking_form.php?type=<?php echo $type; ?>" class="btn btn-primary">Pesan Sekarang</a>
+                            <a href="../form/booking_form.php?type=<?php echo $type; ?>" class="btn btn-primary" style="background-color: #E57C23; border-color: #E57C23;">Pesan Sekarang</a>
                         </div>
                     </div>
                 </div>
