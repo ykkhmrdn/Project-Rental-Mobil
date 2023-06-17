@@ -75,7 +75,7 @@ $result = mysqli_query($db, $sql);
                             <p class="card-text">Merk: <?php echo $merk; ?></p>
                             <p class="card-text">Type: <?php echo $type; ?></p>
                             <p class="card-text">Transmisi: <?php echo $transmisi; ?></p>
-                            <a href="../form/booking_form.php?noPlat=<?php echo $NoPlat; ?>" class="btn btn-primary">Pesan Sekarang</a>
+                            <a href="../form/booking_form.php?type=<?php echo $type; ?>" class="btn btn-primary">Pesan Sekarang</a>
                         </div>
                     </div>
                 </div>
