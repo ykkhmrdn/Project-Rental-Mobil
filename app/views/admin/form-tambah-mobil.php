@@ -42,9 +42,7 @@ include("/xampp/htdocs/project-rental-mobil/app/config/database.php");
 
                 <!-- Right-aligned navbar links -->
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a href="../auth/profile.php" class="nav-link btn btn-primary">Profil</a>
-                    </li>
+                
                     <li class="nav-item">
                         <a href="../home/index.php" class="nav-link btn btn-primary">Log Out</a>
                     </li>
@@ -76,12 +74,12 @@ include("/xampp/htdocs/project-rental-mobil/app/config/database.php");
                             <a href="./edit-user.php" class="nav-link">
                                 <i class="nav-icon bi bi-person"></i>
                                 <p>
-                                    Data User
+                                    Data Pengguna
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="./" class="nav-link">
                                 <i class="nav-icon bi bi-file-earmark-text"></i>
                                 <p>
                                     Data Transaksi

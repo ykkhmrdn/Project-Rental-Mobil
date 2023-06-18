@@ -55,9 +55,7 @@ if (mysqli_num_rows($query) < 1) {
 
                 <!-- Right-aligned navbar links -->
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a href="../auth/profile.php" class="nav-link btn btn-primary">Profil</a>
-                    </li>
+        
                     <li class="nav-item">
                         <a href="../home/index.php" class="nav-link btn btn-primary">Log Out</a>
                     </li>
@@ -89,12 +87,12 @@ if (mysqli_num_rows($query) < 1) {
                             <a href="./edit-user.php" class="nav-link">
                                 <i class="nav-icon bi bi-person"></i>
                                 <p>
-                                    Data User
+                                    Data Pengguna
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="./data-transaksi.php" class="nav-link">
                                 <i class="nav-icon bi bi-file-earmark-text"></i>
                                 <p>
                                     Data Transaksi

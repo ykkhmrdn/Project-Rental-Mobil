@@ -1,5 +1,11 @@
 <?php
 require_once __DIR__ . '/../../config/database.php';
+
+// Inisialisasi variabel $nik
+$nik = "";
+
+// Simpan NIK pengguna dalam sesi
+$_SESSION["nik"] = $nik;
 ?>
 
 <!DOCTYPE html>
@@ -64,16 +70,17 @@ require_once __DIR__ . '/../../config/database.php';
                         }
 
                         // Menggunakan prepared statement untuk mencegah SQL injection
-                        $stmt = $conn->prepare("SELECT role FROM viewusers WHERE NamaUser = ? AND Password = ?");
+                        $stmt = $conn->prepare("SELECT NIK, role FROM viewusers WHERE NamaUser = ? AND Password = ?");
                         $stmt->bind_param("ss", $NamaUser, $Password);
                         $stmt->execute();
-                        $stmt->bind_result($role);
+                        $stmt->bind_result($nik, $role);
 
                         // Memeriksa apakah pengguna ditemukan
                         if ($stmt->fetch()) {
-                            // Jika pengguna ditemukan, simpan role ke dalam session atau lakukan tindakan lain sesuai kebutuhan Anda
+                            // Jika pengguna ditemukan, simpan role dan NIK ke dalam session
                             session_start();
                             $_SESSION["role"] = $role;
+                            $_SESSION["nik"] = $nik;
 
                             // Redirect pengguna ke halaman yang sesuai dengan peran (role) mereka
                             if ($role == "Admin") {

@@ -9,12 +9,18 @@ if (!isset($_SESSION["role"])) {
     exit();
 }
 
-// Mengambil data riwayat transaksi dari tabel viewtransaksi
-$query = "SELECT * FROM viewriwayattransaksi";
+// Periksa apakah NIK pengguna tersedia di dalam sesi
+if (!isset($_SESSION["nik"])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Mengambil NIK pengguna yang sedang login
+$nik = $_SESSION['nik'];
+
+// Mengambil data riwayat transaksi berdasarkan NIK pengguna
+$query = "SELECT * FROM viewriwayattransaksi WHERE NIK = '$nik'";
 $result = mysqli_query($db, $query);
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +56,7 @@ $result = mysqli_query($db, $query);
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <!-- Tombol Profile -->
-                <a href="profile.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Profile</a>
+                <a href="../profil/profil.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Profile</a>
                 <!-- Tombol Logout -->
                 <a href="../home/index.php" class="btn text-white me-md-5" type="button" style="background-color: #E57C23;">Logout</a>
 
@@ -70,7 +76,9 @@ $result = mysqli_query($db, $query);
                     <th>Tanggal Pesan</th>
                     <th>Tanggal Pinjam</th>
                     <th>Tanggal Kembali Rencana</th>
+                    <th>Total Harga</th>
                     <th>Status Transaksi</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -83,7 +91,9 @@ $result = mysqli_query($db, $query);
                     echo "<td>" . $row['Tanggal_Pesan'] . "</td>";
                     echo "<td>" . $row['Tanggal_Pinjam'] . "</td>";
                     echo "<td>" . $row['Tanggal_Kembali_Rencana'] . "</td>";
+                    echo "<td>" . $row['Total_Bayar'] . "</td>";
                     echo "<td>" . $row['StatusTransaksi'] . "</td>";
+                    echo '<td><a href="cetak_kuitansi.php?notransaksi=' . $row['NoTransaksi'] . '">Cetak Kuitansi</a></td>';
                     echo "</tr>";
                 }
                 ?>

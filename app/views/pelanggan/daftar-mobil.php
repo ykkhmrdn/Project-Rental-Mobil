@@ -36,7 +36,7 @@ $result = mysqli_query($db, $sql);
             </div>
 
              <!-- Tombol Profile -->
-             <a href="profile.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Profile</a>
+             <a href="../profil/profil.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Profile</a>
                 <!-- Tombol Logout -->
                 <a href="../home/index.php" class="btn text-white me-md-5" type="button" style="background-color: #E57C23;">Logout</a>
 

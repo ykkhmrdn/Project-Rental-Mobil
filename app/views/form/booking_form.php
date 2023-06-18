@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../../config/database.php';
 
+// Initialize variables
+$Total_Bayar = 0;
+
 if (isset($_GET['type'])) {
     $carType = $_GET['type'];
 } else {
@@ -11,42 +14,63 @@ if (isset($_GET['type'])) {
 }
 
 // Example usage of database connection
-$query = "SELECT * FROM type WHERE NmType = '$carType'";
+$query = "SELECT m.HargaSewa FROM mobil m
+          JOIN type t ON m.IdType = t.IdType
+          WHERE t.NmType = '$carType'";
+
 $result = mysqli_query($db, $query);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve form values
-    $NoTransaksi = uniqid();
-    $nik = $_POST['nik'];
-    $tanggalPesan = $_POST['tanggalPesan'];
-    $tanggalPinjam = $_POST['tanggalPinjam'];
-    $tanggalKembaliRencana = $_POST['tanggalKembaliRencana'];
-    $idSopir = $_POST['sopir'];
+// Check if the car type exists
+if (mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    $hargaSewa = $row['HargaSewa'];
 
-    // Check if the transaction number already exists in the table
-    $checkQuery = "SELECT * FROM transaksi WHERE NoTransaksi = '$NoTransaksi'";
-    $checkResult = mysqli_query($db, $checkQuery);
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Retrieve form values
+        $NoTransaksi = uniqid();
+        $nik = $_POST['nik'];
+        $tanggalPesan = $_POST['tanggalPesan'];
+        $tanggalPinjam = $_POST['tanggalPinjam'];
+        $tanggalKembaliRencana = $_POST['tanggalKembaliRencana'];
+        $idSopir = $_POST['sopir'];
 
-    if (mysqli_num_rows($checkResult) > 0) {
-        // If the transaction number already exists, display an error message or ask the user to enter a different transaction number
-        echo '<div class="alert alert-danger" role="alert">
-                Nomor transaksi sudah ada. Silakan masukkan nomor transaksi yang berbeda.
-              </div>';
-    } else {
-        // Save data to the database
-        $query = "INSERT INTO transaksi (NoTransaksi, NIK, Tanggal_Pesan, Tanggal_Pinjam, Tanggal_Kembali_Rencana, Id_Sopir, StatusTransaksi) 
-                  VALUES ('$NoTransaksi', '$nik', '$tanggalPesan', '$tanggalPinjam', '$tanggalKembaliRencana', '$idSopir', 'Proses')";
+        // Calculate the total rental price
+        $tanggalPinjamObj = new DateTime($tanggalPinjam);
+        $tanggalKembaliRencanaObj = new DateTime($tanggalKembaliRencana);
+        $lamaPinjam = $tanggalPinjamObj->diff($tanggalKembaliRencanaObj)->days;
 
-        // Execute query
-        if (mysqli_query($db, $query)) {
-            // Redirect to booking success page
-            header("Location: ./booking_success.php");
-            exit();
+        $Total_Bayar = $hargaSewa * $lamaPinjam;
+
+        // Check if the transaction number already exists in the table
+        $checkQuery = "SELECT * FROM transaksi WHERE NoTransaksi = '$NoTransaksi'";
+        $checkResult = mysqli_query($db, $checkQuery);
+
+        if (mysqli_num_rows($checkResult) > 0) {
+            // If the transaction number already exists, display an error message or ask the user to enter a different transaction number
+            echo '<div class="alert alert-danger" role="alert">
+                    Nomor transaksi sudah ada. Silakan masukkan nomor transaksi yang berbeda.
+                </div>';
         } else {
-            // Display the actual MySQL error for debugging
-            echo '<div class="alert alert-danger" role="alert">' . mysqli_error($db) . '</div>';
+            // Save data to the database
+            $query = "INSERT INTO transaksi (NoTransaksi, NIK, Tanggal_Pesan, Tanggal_Pinjam, Tanggal_Kembali_Rencana, Id_Sopir, StatusTransaksi, Total_Bayar) 
+                      VALUES ('$NoTransaksi', '$nik', '$tanggalPesan', '$tanggalPinjam', '$tanggalKembaliRencana', '$idSopir', 'Proses', '$Total_Bayar')";
+
+            // Execute query
+            if (mysqli_query($db, $query)) {
+                // Redirect to booking success page
+                header("Location: ../pembayaran/pembayaran.php");
+                exit();
+            } else {
+                // Display the actual MySQL error for debugging
+                echo '<div class="alert alert-danger" role="alert">' . mysqli_error($db) . '</div>';
+            }
         }
     }
+} else {
+    // Handle the case when the car type doesn't exist
+    // For example, redirect the user back to the car listing page
+    header("Location: ../../pelanggan/daftar-mobil.php");
+    exit();
 }
 ?>
 
@@ -87,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <!-- Tombol Profile -->
-            <a href="profile.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Profile</a>
+            <a href="../profil/profil.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Profile</a>
             <!-- Tombol Logout -->
             <a href="../home/index.php" class="btn text-white me-md-5" type="button" style="background-color: #E57C23;">Logout</a>
         </div>
@@ -127,6 +151,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <option value="0">Tidak</option>
                 </select>
             </div>
+
+            <!-- Display total payment -->
+            <div class="mb-3">
+                <label for="Total_Bayar" class="form-label">Total Harga:</label>
+                <input type="text" id="Total_Bayar" name="Total_Bayar" class="form-control" value="<?php echo $Total_Bayar; ?>" readonly>
+            </div>
+
             <button type="submit" class="btn btn-primary mb-5">Submit</button>
         </form>
     </div>
