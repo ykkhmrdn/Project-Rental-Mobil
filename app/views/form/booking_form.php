@@ -1,72 +1,55 @@
 <?php
-
 require_once __DIR__ . '/../../config/database.php';
 
-
 if (isset($_GET['type'])) {
-    $type = $_GET['type'];
+    $carType = $_GET['type'];
 } else {
-    // Handle the case when no NoPlat parameter is provided
+    // Handle the case when no type parameter is provided
     // For example, redirect the user back to the car listing page
     header("Location: ../../pelanggan/daftar-mobil.php");
     exit();
 }
 
-// Contoh penggunaan koneksi database
-$query = "SELECT * FROM type WHERE NmType = '$type'";
+// Example usage of database connection
+$query = "SELECT * FROM type WHERE NmType = '$carType'";
 $result = mysqli_query($db, $query);
 
-// Proses form saat tombol "Submit" ditekan
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Mengambil data dari form
-    $merk = $_POST['merkInput'];
-    $type = $_POST['type'];
-    $transmisi = $_POST['transmisi'];
-    $NoPlat = $_POST["noPlat"];
-    $nik = $_POST["nik"];
-    $tanggalPesan = $_POST["tanggalPesan"];
-    $tanggalPinjam = $_POST["tanggalPinjam"];
-    $tanggalKembaliRencana = $_POST["tanggalKembaliRencana"];
-    $idSopir = $_POST["idSopir"];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Retrieve form values
+    $NoTransaksi = uniqid();
+    $nik = $_POST['nik'];
+    $tanggalPesan = $_POST['tanggalPesan'];
+    $tanggalPinjam = $_POST['tanggalPinjam'];
+    $tanggalKembaliRencana = $_POST['tanggalKembaliRencana'];
+    $idSopir = $_POST['sopir'];
 
-    // Simpan data ke dalam database
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $database = "rental_mobil";
+    // Check if the transaction number already exists in the table
+    $checkQuery = "SELECT * FROM transaksi WHERE NoTransaksi = '$NoTransaksi'";
+    $checkResult = mysqli_query($db, $checkQuery);
 
-    // Membuat koneksi ke database
-    $conn = new mysqli($servername, $username, $password, $database);
-
-    // Memeriksa koneksi
-    if ($conn->connect_error) {
-        die("Koneksi ke database gagal: " . $conn->connect_error);
-    }
-
-    // Mengatur timezone sesuai kebutuhan
-    date_default_timezone_set('Asia/Jakarta');
-
-    // Mengambil tanggal dan waktu saat ini
-    $currentDateTime = date('Y-m-d H:i:s');
-
-    // Membuat nomor transaksi yang unik
-    $noTransaksi = uniqid();
-
-    // Membuat query untuk menyimpan data booking mobil
-    $sql = "INSERT INTO transaksi (NoTransaksi, NIK, Id_Mobil, Tanggal_Pesan, Tanggal_Pinjam, Tanggal_Kembali_Rencana, StatusTransaksi) VALUES ('$noTransaksi', '$nik', '$NoPlat', '$tanggalPesan', '$tanggalPinjam', '$tanggalKembaliRencana', 'Proses')";
-
-    if ($conn->query($sql) === TRUE) {
-        // Redirect ke halaman booking_success.php
-        header("Location: booking_success.php");
-        exit();
+    if (mysqli_num_rows($checkResult) > 0) {
+        // If the transaction number already exists, display an error message or ask the user to enter a different transaction number
+        echo '<div class="alert alert-danger" role="alert">
+                Nomor transaksi sudah ada. Silakan masukkan nomor transaksi yang berbeda.
+              </div>';
     } else {
-        echo "Terjadi kesalahan: " . $conn->error;
-    }
+        // Save data to the database
+        $query = "INSERT INTO transaksi (NoTransaksi, NIK, Tanggal_Pesan, Tanggal_Pinjam, Tanggal_Kembali_Rencana, Id_Sopir, StatusTransaksi) 
+                  VALUES ('$NoTransaksi', '$nik', '$tanggalPesan', '$tanggalPinjam', '$tanggalKembaliRencana', '$idSopir', 'Proses')";
 
-    // Menutup koneksi ke database
-    $conn->close();
+        // Execute query
+        if (mysqli_query($db, $query)) {
+            // Redirect to booking success page
+            header("Location: ./booking_success.php");
+            exit();
+        } else {
+            // Display the actual MySQL error for debugging
+            echo '<div class="alert alert-danger" role="alert">' . mysqli_error($db) . '</div>';
+        }
+    }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -84,41 +67,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav text-center"> <!-- Added text-center class -->
+                <ul class="navbar-nav text-center">
                     <li class="nav-item">
-                        <a class="navbar-brand" href="#"> <img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="" height="30px"></a>
+                        <a class="navbar-brand" href="#"><img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="" height="30px"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'riwayat_transaksi.php') ? 'active' : ''; ?>" href="../pelanggan/riwayat_transaksi.php">Riwayat Transaksi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'daftar-mobil.php') ? 'active' : ''; ?>" href="../pelanggan/daftar-mobil.php">Koleksi Mobil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'booking_form.php') ? 'active' : ''; ?>" href="../form/booking_form.php">Form Booking Mobil</a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="../home/index.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../about/about.php">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="../pelanggan/daftar-mobil.php">Koleksi Mobil</a>
-                    </li>
                 </ul>
+
+
             </div>
 
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="../auth/login.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Login</a>
-                <a href="../auth/registration.php" class="btn text-white me-md-5" type="button" style="background-color: #E57C23;">Register</a>
-            </div>
+            <!-- Tombol Profile -->
+            <a href="profile.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Profile</a>
+            <!-- Tombol Logout -->
+            <a href="../home/index.php" class="btn text-white me-md-5" type="button" style="background-color: #E57C23;">Logout</a>
         </div>
     </nav>
     <!-- End Navbar -->
 
     <!-- Form Booking -->
     <div class="container">
-        <h1 class="mt-4">Form Booking Mobil</h1>
-        <form method="POST" action="booking_success.php" class="mt-4">
+        <h1 class="mt-4 text-center">Form Booking Mobil</h1>
+        <form method="POST" action="">
             <div class="mb-3">
-                <label for="type" class="form-label">Type Mobil:</label>
-                <input type="text" id="type" name="type" class="form-control" value="<?php echo isset($_GET['type']) ? $_GET['type'] : ''; ?>" required readonly>
+                <label for="carType" class="form-label">Type Mobil:</label>
+                <input type="text" id="carType" name="carType" class="form-control" value="<?php echo isset($_GET['type']) ? $_GET['type'] : ''; ?>" required readonly>
             </div>
-            <!-- Tambahkan elemen input tersembunyi untuk menyimpan data lainnya -->
-            <input type="hidden" id="merkInput" name="merk" value="<?php echo isset($_GET['NmMerk']) ? $_GET['NmMerk'] : ''; ?>">
+            <!-- Add hidden input elements to store other data -->
+            <input type="hidden" id="idMobil" name="idMobil" value="<?php echo isset($_GET['idMobil']) ? $_GET['idMobil'] : ''; ?>">
             <div class="mb-3">
                 <label for="nik" class="form-label">NIK Pelanggan:</label>
                 <input type="text" id="nik" name="nik" class="form-control" required>
@@ -136,8 +121,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="date" id="tanggalKembaliRencana" name="tanggalKembaliRencana" class="form-control" required>
             </div>
             <div class="mb-3">
-                <label for="idSopir" class="form-label">ID Sopir (opsional):</label>
-                <input type="text" id="idSopir" name="idSopir" class="form-control">
+                <label for="sopir" class="form-label">Penggunaan Sopir:</label>
+                <select id="sopir" name="sopir" class="form-control">
+                    <option value="1">Ya</option>
+                    <option value="0">Tidak</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary mb-5">Submit</button>
         </form>
@@ -171,20 +159,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </footer>
     <!-- End Footer -->
-     <!-- Copyright -->
-     <section class="copyright">
+
+    <!-- Copyright -->
+    <section class="copyright">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <p>Copyright &copy; Java ELLTRANS Car Rental 2023.</p>
+            <div class="row text-center">
+                <div class="col-lg-12">
+                    <p>© 2023 JAVA ELLTRANS Car Rental - All Rights Reserved.</p>
                 </div>
             </div>
         </div>
     </section>
+    <!-- End Copyright -->
 
-
-    <!-- Include Bootstrap JavaScript -->
+    <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- End JS -->
 </body>
 
 </html>

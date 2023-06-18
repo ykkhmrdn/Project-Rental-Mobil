@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
@@ -64,93 +65,97 @@
         }
     </style>
 </head>
+
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-            <ul class="navbar-nav text-center"> <!-- Added text-center class -->
-                <li class="nav-item">
-                    <a class="navbar-brand" href="#"> <img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="" height="30px"></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../about/about.php">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="../pelanggan/daftar-mobil.php">Koleksi Mobil</a>
-                </li>
-            </ul>
-        </div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav text-center"> <!-- Added text-center class -->
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="#"> <img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="" height="30px"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'riwayat_transaksi.php') ? 'active' : ''; ?>" href="../pelanggan/riwayat_transaksi.php">Riwayat Transaksi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'daftar-mobil.php') ? 'active' : ''; ?>" href="../pelanggan/daftar-mobil.php">Koleksi Mobil</a>
+                    </li>
 
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <a href="../auth/login.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Login</a>
-            <a href="../auth/registration.php" class="btn text-white me-md-5" type="button" style="background-color: #E57C23;">Register</a>
-        </div>
-    </div>
-</nav>
-<!-- End Navbar -->
 
-<!-- Booking Sukses -->
-<div class="container">
-    <div class="booking-success">
-        <h1 class="booking-success-heading">Booking Mobil Berhasil</h1>
-
-        <?php
-        // Menampilkan pesan sukses jika booking berhasil dilakukan
-        if (isset($_POST["type"])) {
-            echo "<p class='booking-success-message'>Booking mobil berhasil dilakukan!</p>";
-        }
-        ?>
-
-        <p class="booking-success-info">Terima kasih telah melakukan booking mobil. Silahkan datang ke tempat JavaEllTrans saat akan mengambil mobilnya, dan pembayaran dilakukan di lokasi saat akan mengambil mobilnya.</p>
-
-        <a href="../pelanggan/riwayat_transaksi.php" class="btn btn-primary booking-success-btn">Cek Riwayat Transaksi</a>
-    </div>
-</div>
-<!-- End Booking Sukses -->
-
-<!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
-                <img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="">
+                </ul>
             </div>
-            <div class="col-lg-8">
-                <div class="row">
-                    <div class="col-md-4">
-                        <h3><i class="bi bi-geo-alt"></i> Lokasi</h3>
-                        <p>Perum Puri Tamanan Indah, Grojogan Rt.07, Tamanan, Banguntapan, Bantul, Bantul, 55191</p>
-                    </div>
-                    <div class="col-md-4">
-                        <h3><i class="bi bi-envelope"></i> Email</h3>
-                        <p>javaelltrans@gmail.com</p>
-                    </div>
-                    <div class="col-md-4">
-                        <h3><i class="bi bi-phone"></i> Kontak</h3>
-                        <p>Telepon: 087754153495</p>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <!-- Tombol Profile -->
+                <a href="profile.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Profile</a>
+                <!-- Tombol Logout -->
+                <a href="../home/index.php" class="btn text-white me-md-5" type="button" style="background-color: #E57C23;">Logout</a>
+
+            </div>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+
+    <!-- Booking Sukses -->
+    <div class="container">
+        <div class="booking-success">
+            <h1 class="booking-success-heading">Booking Mobil Berhasil</h1>
+
+            <?php
+            // Menampilkan pesan sukses jika booking berhasil dilakukan
+            if (isset($_POST["type"])) {
+                echo "<p class='booking-success-message'>Booking mobil berhasil dilakukan!</p>";
+            }
+            ?>
+
+            <p class="booking-success-info">Terima kasih telah melakukan booking mobil. Silahkan datang ke tempat JavaEllTrans saat akan mengambil mobilnya, dan pembayaran dilakukan di lokasi saat akan mengambil mobilnya.</p>
+
+            <a href="../pelanggan/riwayat_transaksi.php" class="btn btn-primary booking-success-btn">Cek Riwayat Transaksi</a>
+        </div>
+    </div>
+    <!-- End Booking Sukses -->
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="">
+                </div>
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h3><i class="bi bi-geo-alt"></i> Lokasi</h3>
+                            <p>Perum Puri Tamanan Indah, Grojogan Rt.07, Tamanan, Banguntapan, Bantul, Bantul, 55191</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h3><i class="bi bi-envelope"></i> Email</h3>
+                            <p>javaelltrans@gmail.com</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h3><i class="bi bi-phone"></i> Kontak</h3>
+                            <p>Telepon: 087754153495</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</footer>
-<!-- End Footer -->
+    </footer>
+    <!-- End Footer -->
 
-<!-- Copyright -->
-<section class="copyright">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <p>Copyright &copy; Java ELLTRANS Car Rental 2023.</p>
+    <!-- Copyright -->
+    <section class="copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>Copyright &copy; Java ELLTRANS Car Rental 2023.</p>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
 </body>
+
 </html>

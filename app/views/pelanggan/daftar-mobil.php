@@ -24,13 +24,10 @@ $result = mysqli_query($db, $sql);
                 <ul class="navbar-nav text-center"> <!-- Added text-center class -->
                     <a class="navbar-brand" href="#"> <img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="" height="30px"></a>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#">Home</a>
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'riwayat_transaksi.php') ? 'active' : ''; ?>" href="../pelanggan/riwayat_transaksi.php">Riwayat Transaksi</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../about/about.php">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="./daftar-mobil.php">Koleksi Mobil</a>
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'daftar-mobil.php') ? 'active' : ''; ?>" href="../pelanggan/daftar-mobil.php">Koleksi Mobil</a>
                     </li>
 
                 </ul>
@@ -38,10 +35,10 @@ $result = mysqli_query($db, $sql);
 
             </div>
 
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="../auth/login.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Login</a>
-                <a href="../auth/registration.php" class="btn text-white me-md-5" type="button" style="background-color: #E57C23;">Register</a>
-            </div>
+             <!-- Tombol Profile -->
+             <a href="profile.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Profile</a>
+                <!-- Tombol Logout -->
+                <a href="../home/index.php" class="btn text-white me-md-5" type="button" style="background-color: #E57C23;">Logout</a>
 
         </div>
     </nav>

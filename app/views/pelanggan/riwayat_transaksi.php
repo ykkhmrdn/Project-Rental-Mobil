@@ -1,13 +1,31 @@
+<?php
+require_once __DIR__ . '/../../config/database.php';
+
+session_start();
+
+// Periksa apakah pengguna sudah login
+if (!isset($_SESSION["role"])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Mengambil data riwayat transaksi dari tabel viewtransaksi
+$query = "SELECT * FROM viewriwayattransaksi";
+$result = mysqli_query($db, $query);
+
+
+
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <title>Riwayat Transaksi | JAVA ELLTRANS Car Rental</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://localhost/project-rental-mobil/app/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-    <title>Riwayat Transaksi - JAVA ELLTRANS Car Rental</title>
 </head>
 
 <body>
@@ -15,52 +33,64 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav text-center">
-                    <a class="navbar-brand" href="#"> <img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="" height="30px"></a>
+                <ul class="navbar-nav text-center"> <!-- Added text-center class -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="navbar-brand" href="#"> <img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="" height="30px"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../about/about.php">About</a>
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'riwayat_transaksi.php') ? 'active' : ''; ?>" href="../pelanggan/riwayat_transaksi.php">Riwayat Transaksi</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./daftar-mobil.php">Koleksi Mobil</a>
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'daftar-mobil.php') ? 'active' : ''; ?>" href="../pelanggan/daftar-mobil.php">Koleksi Mobil</a>
                     </li>
+
+
                 </ul>
             </div>
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="../auth/profile.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Profil</a>
-                <a href="../home/index.php" class="btn text-white me-md-5" type="button" style="background-color: #E57C23;">Log Out</a>
+                <!-- Tombol Profile -->
+                <a href="profile.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Profile</a>
+                <!-- Tombol Logout -->
+                <a href="../home/index.php" class="btn text-white me-md-5" type="button" style="background-color: #E57C23;">Logout</a>
+
             </div>
         </div>
     </nav>
     <!-- End Navbar -->
 
-    <!-- Riwayat Transaksi -->
-    <section class="container riwayat-transaksi">
-        <h2 class="text-center pb-3">Riwayat Transaksi</h2>
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Nomor Transaksi: TRX001</h5>
-                        <p class="card-text">Tanggal Transaksi: 10 Juni 2023</p>
-                        <p class="card-text">Total Pembayaran: Rp 500.000</p>
-                    </div>
-                </div>
-                <div class="card mt-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Nomor Transaksi: TRX002</h5>
-                        <p class="card-text">Tanggal Transaksi: 12 Juni 2023</p>
-                        <p class="card-text">Total Pembayaran: Rp 750.000</p>
-                    </div>
-                </div>
-                <!-- Tambahkan card riwayat transaksi lainnya di sini -->
-            </div>
-        </div>
-    </section>
-    <!-- End Riwayat Transaksi -->
+    <div class="container">
+        <h1 class="mt-4 text-center">Riwayat Transaksi</h1>
+        <table class="table mt-4">
+            <thead class="table-dark">
+                <tr>
+                    <th>No Transaksi</th>
+                    <th>NIK</th>
+                    <th>Nama Type</th>
+                    <th>Tanggal Pesan</th>
+                    <th>Tanggal Pinjam</th>
+                    <th>Tanggal Kembali Rencana</th>
+                    <th>Status Transaksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<tr>";
+                    echo "<td>" . $row['NoTransaksi'] . "</td>";
+                    echo "<td>" . $row['NIK'] . "</td>";
+                    echo "<td>" . $row['NmType'] . "</td>";
+                    echo "<td>" . $row['Tanggal_Pesan'] . "</td>";
+                    echo "<td>" . $row['Tanggal_Pinjam'] . "</td>";
+                    echo "<td>" . $row['Tanggal_Kembali_Rencana'] . "</td>";
+                    echo "<td>" . $row['StatusTransaksi'] . "</td>";
+                    echo "</tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+
 
     <!-- Footer -->
     <footer class="footer">
@@ -73,7 +103,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <h3><i class="bi bi-geo-alt"></i> Lokasi</h3>
-                            <p>Perum Puri Tamanan Indah , Grojogan Rt.07, Tamanan, Banguntapan, Bantul, Bantul, 55191</p>
+                            <p>Perum Puri Tamanan Indah, Grojogan Rt.07, Tamanan, Banguntapan, Bantul, Bantul, 55191</p>
                         </div>
                         <div class="col-md-4">
                             <h3><i class="bi bi-envelope"></i> Email</h3>
@@ -89,20 +119,20 @@
         </div>
     </footer>
     <!-- End Footer -->
-
     <!-- Copyright -->
     <section class="copyright">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <p>© Java ELLTRANS Car Rental 2023.</p>
+                    <p>Copyright &copy; Java ELLTRANS Car Rental 2023.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Script -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+    <!-- Include Bootstrap JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

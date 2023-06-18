@@ -14,6 +14,8 @@ $result = mysqli_query($db, $sql);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://localhost/project-rental-mobil/app/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+
     <title>JAVA ELLTRANS Car Rental</title>
 </head>
 
@@ -27,10 +29,10 @@ $result = mysqli_query($db, $sql);
                 <ul class="navbar-nav text-center"> <!-- Added text-center class -->
                     <a class="navbar-brand" href="#"> <img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="" height="30px"></a>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? 'active' : ''; ?>" href="../home/index.php">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../about/about.php">About</a>
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'about.php') ? 'active' : ''; ?>" href="../about/about.php">Tentang Kami</a>
                     </li>
 
                 </ul>
@@ -57,7 +59,7 @@ $result = mysqli_query($db, $sql);
     </div>
 
     <!-- Kenapa Memilih Kami -->
-    <section class="container reason">
+    <section class="container reason" data-aos="fade-up" data-aos-duration="1000">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-md-6">
                 <div class="card h-100">
@@ -95,7 +97,7 @@ $result = mysqli_query($db, $sql);
 
     <!-- Daftar Mobil -->
 
-    <section class="container car-collection">
+    <section class="container car-collection" data-aos="fade-up" data-aos-duration="1000">
         <h2 class="text-center pb-3">Koleksi Mobil Kami</h2>
         <div class="row justify-content-center">
 
@@ -194,6 +196,11 @@ $result = mysqli_query($db, $sql);
         alert("Anda harus login terlebih dahulu untuk melakukan pemesanan.");
     }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+
 
 
 </body>

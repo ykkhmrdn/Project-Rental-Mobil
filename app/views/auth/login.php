@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/../../config/database.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,7 +26,7 @@
                         <a class="nav-link active" aria-current="page" href="../home/index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
+                        <a class="nav-link" href="../about/about.php">About</a>
                     </li>
                 </ul>
             </div>
