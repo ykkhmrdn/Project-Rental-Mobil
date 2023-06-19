@@ -75,7 +75,7 @@
                     <div class="col-md-3">
                         <div class="team-member text-center">
                             <img src="https://localhost/project-rental-mobil/app/img/assets/albert.jpg" alt="Albert Aymi pratama Putra" class="team-member-img">
-                            <h4 class="mt-3">Albert Aymi pratama Putra</h4>
+                            <h4 class="mt-3">Albert Aymi Pratama Putra</h4>
                             <p>Front-end Web Developer</p>
                         </div>
                     </div>
