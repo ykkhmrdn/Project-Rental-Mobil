@@ -1,7 +1,8 @@
 <?php
+session_start();
 include("/xampp/htdocs/project-rental-mobil/app/config/database.php");
 
-$sql = "SELECT m.*, merk.NmMerk, type.NmType FROM mobil m 
+$sql = "SELECT m.*, merk.NmMerk, type.IdType FROM mobil m 
         JOIN merk ON m.KdMerk = merk.KdMerk 
         JOIN type ON m.IdType = type.IdType";
 $result = mysqli_query($db, $sql);
@@ -14,14 +15,12 @@ $result = mysqli_query($db, $sql);
     <title>Daftar Mobil | JAVA ELLTRANS Car Rental</title>
 </head>
 
-
 <body>
-
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav text-center"> <!-- Added text-center class -->
+                <ul class="navbar-nav text-center">
                     <a class="navbar-brand" href="#"> <img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="" height="30px"></a>
                     <li class="nav-item">
                         <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'riwayat_transaksi.php') ? 'active' : ''; ?>" href="../pelanggan/riwayat_transaksi.php">Riwayat Transaksi</a>
@@ -29,23 +28,13 @@ $result = mysqli_query($db, $sql);
                     <li class="nav-item">
                         <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'daftar-mobil.php') ? 'active' : ''; ?>" href="../pelanggan/daftar-mobil.php">Koleksi Mobil</a>
                     </li>
-
                 </ul>
-
-
             </div>
-
-             <!-- Tombol Profile -->
-             <a href="../profil/profil.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Profile</a>
-                <!-- Tombol Logout -->
-                <a href="../home/index.php" class="btn text-white me-md-5" type="button" style="background-color: #E57C23;">Logout</a>
-
+            <a href="../profil/profil.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Profile</a>
+            <a href="../home/index.php" class="btn text-white me-md-5" type="button" style="background-color: #E57C23;">Logout</a>
         </div>
     </nav>
-
     <!-- End Navbar -->
-
-
 
     <!-- Daftar Mobil -->
     <section class="container car-collection daftar-mobil">
@@ -58,7 +47,7 @@ $result = mysqli_query($db, $sql);
                 $statusRental = $row['StatusRental'];
                 $hargaSewa = $row['HargaSewa'];
                 $merk = $row['NmMerk'];
-                $type = $row['NmType'];
+                $type = $row['IdType'];
                 $transmisi = $row['Transmisi'];
             ?>
                 <div class="col-lg-3 col-md-6 mt-5">
@@ -72,7 +61,7 @@ $result = mysqli_query($db, $sql);
                             <p class="card-text">Merk: <?php echo $merk; ?></p>
                             <p class="card-text">Type: <?php echo $type; ?></p>
                             <p class="card-text">Transmisi: <?php echo $transmisi; ?></p>
-                            <a href="../form/booking_form.php?type=<?php echo $type; ?>" class="btn btn-primary" style="background-color: #E57C23; border-color: #E57C23;">Pesan Sekarang</a>
+                            <a href="../form/booking_form.php?NoPlat=<?php echo $row['NoPlat']; ?>&IdType=<?php echo $row['IdType']; ?>" class="btn btn-primary" style="background-color: #E57C23; border-color: #E57C23;">Pesan Sekarang</a>
                         </div>
                     </div>
                 </div>
@@ -110,7 +99,6 @@ $result = mysqli_query($db, $sql);
         </div>
     </footer>
 
-
     <!-- Copyright -->
     <section class="copyright">
         <div class="container">
@@ -122,33 +110,18 @@ $result = mysqli_query($db, $sql);
         </div>
     </section>
 
-
-
-
-
-
-
-
     <!-- Script -->
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
     <script>
         function checkLogin() {
-            // Periksa apakah pengguna sudah login atau belum
-            // Ganti 'isLoggedIn' dengan kondisi login yang sesuai dari backend Anda
-            var isLoggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
-
+            var isLoggedIn = <?php echo isset($_SESSION['id']) ? 'true' : 'false'; ?>;
             if (isLoggedIn) {
-                // Jika pengguna sudah login, lanjutkan ke halaman sewa mobil
-                window.location.href = "link-halaman-sewa-mobil";
+                window.location.href = "../form/booking_form.php";
             } else {
-                // Jika pengguna belum login, tampilkan peringatan dan arahkan ke halaman login/registrasi
                 alert("Anda harus login atau daftar terlebih dahulu untuk menyewa mobil.");
                 window.location.href = "/project-rental-mobil/app/views/auth/login.php";
             }
         }
     </script>
-
-
 </body>

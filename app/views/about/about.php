@@ -8,7 +8,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://localhost/project-rental-mobil/app/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
 </head>
+
 
 <body>
     <!-- Navbar -->
@@ -40,23 +42,23 @@
     <!-- End Navbar -->
 
     <!-- About Section -->
-    <section class="container about">
+    <section class="container about" data-aos="fade-up">
         <div class="row justify-content-center mt-5">
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-body">
                         <h1 class="card-title text-center">Tentang Javaelltrans Car Rental</h1>
                         <p class="card-text">
-                        Javaelltrans Car Rental adalah perusahaan persewaan mobil terkemuka yang menyediakan layanan persewaan mobil berkualitas dengan harga terjangkau.
+                            Javaelltrans Car Rental adalah perusahaan persewaan mobil terkemuka yang menyediakan layanan persewaan mobil berkualitas dengan harga terjangkau.
                         </p>
                         <p class="card-text">
-                        Perusahaan kami menawarkan berbagai macam pilihan mobil dari berbagai merek ternama, antara lain city car, group travel vehicle, dan mobil mewah untuk acara-acara khusus seperti pernikahan.
+                            Perusahaan kami menawarkan berbagai macam pilihan mobil dari berbagai merek ternama, antara lain city car, group travel vehicle, dan mobil mewah untuk acara-acara khusus seperti pernikahan.
                         </p>
                         <p class="card-text">
-                        Kami bangga dengan tim profesional kami dan armada kendaraan yang terawat dengan baik. Layanan pelanggan kami tersedia sepanjang waktu dan dapat dihubungi melalui berbagai saluran, termasuk SMS, WhatsApp, email, atau panggilan telepon langsung.
+                            Kami bangga dengan tim profesional kami dan armada kendaraan yang terawat dengan baik. Layanan pelanggan kami tersedia sepanjang waktu dan dapat dihubungi melalui berbagai saluran, termasuk SMS, WhatsApp, email, atau panggilan telepon langsung.
                         </p>
                         <p class="card-text">
-                        Di Javaelltrans Car Rental, kami berusaha untuk memberikan layanan yang luar biasa, memastikan kepuasan pelanggan dan pengalaman sewa mobil yang menyenangkan.
+                            Di Javaelltrans Car Rental, kami berusaha untuk memberikan layanan yang luar biasa, memastikan kepuasan pelanggan dan pengalaman sewa mobil yang menyenangkan.
                         </p>
                     </div>
                 </div>
@@ -64,7 +66,46 @@
         </div>
     </section>
 
-    <!-- End About Section -->
+    <!-- Team Section -->
+    <section class="container team" data-aos="fade-up">
+        <div class="row justify-content-center mt-5 mb-5">
+            <div class="col-lg-8">
+                <h2 class="text-center">Meet Our Team</h2>
+                <div class="row mt-4">
+                    <div class="col-md-3">
+                        <div class="team-member text-center">
+                            <img src="https://localhost/project-rental-mobil/app/img/assets/albert.jpg" alt="Albert Aymi pratama Putra" class="team-member-img">
+                            <h4 class="mt-3">Albert Aymi pratama Putra</h4>
+                            <p>Front-end Web Developer</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="team-member text-center">
+                            <img src="https://localhost/project-rental-mobil/app/img/assets/sifaq.jpg" alt="Muhammad Asifaq" class="team-member-img">
+                            <h4 class="mt-3">Muhammad Asifaq</h4>
+                            <p>Back-end Web Developer</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="team-member text-center">
+                            <img src="https://localhost/project-rental-mobil/app/img/assets/ilyas.jpg" alt="Muhammad Ilyas" class="team-member-img">
+                            <h4 class="mt-3">Muhammad Ilyas</h4>
+                            <p>Front-end Web Developer</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="team-member text-center">
+                            <img src="https://localhost/project-rental-mobil/app/img/assets/yokofixx.jpg" alt="Yoko Khomarudin H" class="team-member-img">
+                            <h4 class="mt-3">Yoko Khomarudin H</h4>
+                            <p>Full-stack Web Developer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
 
     <!-- Footer -->
     <footer class="footer">
@@ -105,8 +146,12 @@
         </div>
     </section>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+     <!-- Scripts -->
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
 </body>
 
 </html>

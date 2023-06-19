@@ -91,7 +91,7 @@ $result = mysqli_query($db, $query);
                     echo "<td>" . $row['Tanggal_Pesan'] . "</td>";
                     echo "<td>" . $row['Tanggal_Pinjam'] . "</td>";
                     echo "<td>" . $row['Tanggal_Kembali_Rencana'] . "</td>";
-                    echo "<td>" . $row['Total_Bayar'] . "</td>";
+                    echo "<td>" . $row['TotalHarga'] . "</td>";
                     echo "<td>" . $row['StatusTransaksi'] . "</td>";
                     echo '<td><a href="cetak_kuitansi.php?notransaksi=' . $row['NoTransaksi'] . '">Cetak Kuitansi</a></td>';
                     echo "</tr>";

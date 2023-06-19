@@ -36,7 +36,7 @@ if (isset($_GET['notransaksi'])) {
         $pdf->Cell(0, 10, 'Tanggal Pesan: ' . $row['Tanggal_Pesan'], 0, 1);
         $pdf->Cell(0, 10, 'Tanggal Pinjam: ' . $row['Tanggal_Pinjam'], 0, 1);
         $pdf->Cell(0, 10, 'Tanggal Kembali Rencana: ' . $row['Tanggal_Kembali_Rencana'], 0, 1);
-        $pdf->Cell(0, 10, 'Total Harga: ' . $row['Total_Bayar'], 0, 1);
+        $pdf->Cell(0, 10, 'Total Harga: ' . $row['TotalHarga'], 0, 1);
         $pdf->Cell(0, 10, 'Status Transaksi: ' . $row['StatusTransaksi'], 0, 1);
 
         // Output the generated PDF to the browser

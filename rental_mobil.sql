@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 11 Jun 2023 pada 16.54
+-- Waktu pembuatan: 19 Jun 2023 pada 23.34
 -- Versi server: 10.4.28-MariaDB
 -- Versi PHP: 8.2.4
 
@@ -33,6 +33,18 @@ CREATE TABLE `merk` (
   `NmMerk` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+--
+-- Dumping data untuk tabel `merk`
+--
+
+INSERT INTO `merk` (`id`, `KdMerk`, `NmMerk`) VALUES
+(33, '1', 'Toyota'),
+(34, '2', 'Toyota'),
+(35, '3', 'Toyota'),
+(36, '4', 'Toyota'),
+(37, '5', 'Honda'),
+(38, '6', 'Mitsubishi');
+
 -- --------------------------------------------------------
 
 --
@@ -48,8 +60,20 @@ CREATE TABLE `mobil` (
   `HargaSewa` double(10,0) DEFAULT NULL,
   `JenisMobil` varchar(20) DEFAULT NULL,
   `Transmisi` enum('Manual','CVT','Matic') DEFAULT NULL,
-  `FotoMobil` varchar(100) DEFAULT NULL
+  `FotoMobil` blob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data untuk tabel `mobil`
+--
+
+INSERT INTO `mobil` (`id`, `NoPlat`, `KdMerk`, `IdType`, `StatusRental`, `HargaSewa`, `JenisMobil`, `Transmisi`, `FotoMobil`) VALUES
+(64, 'AB 2547 FH', '1', '1', 'Kosong', 500000, 'MPV', 'Manual', 0x3520666f7274756e6572206772203230323220617474697475646520626c61636b2e706e67),
+(65, 'AB 2092 KL', '2', '2', 'Kosong', 300000, 'MPV', 'Manual', 0x4176616e7a615f472d283233292e706e67),
+(66, 'AB 1346 EQ', '3', '3', 'Kosong', 450000, 'SUV', 'CVT', 0x6e65772076656e74757265722e504e47),
+(67, 'AB 9873 BG', '4', '4', 'Kosong', 600000, 'SUV', 'CVT', 0x70616a65726f2e706e67),
+(68, 'AB 6432 YJ', '5', '5', 'Kosong', 550000, 'Sedan', 'Matic', 0x556e69745f486f6e64612d3030362d31206272696f2e706e67),
+(69, 'AB 5682 OI', '6', '6', 'Kosong', 450000, 'SUV', 'CVT', 0x7870616e6465722d77686974652e706e67);
 
 -- --------------------------------------------------------
 
@@ -70,6 +94,19 @@ CREATE TABLE `sopir` (
   `StatusSopir` enum('Busy','Booked','Free') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+--
+-- Dumping data untuk tabel `sopir`
+--
+
+INSERT INTO `sopir` (`id`, `IdSopir`, `NIK`, `NmSopir`, `Alamat`, `NoTelp`, `JenisKelamin`, `NoSim`, `TarifPerhari`, `StatusSopir`) VALUES
+(9, 'SPR000', '-', '-', '-', '-', 'L', '-', 0, 'Free'),
+(10, 'SPR001', '172040', 'Muh. Rafly Hisyam', 'Taman Sudiang', '088812313211', 'L', '817381790', 210000, 'Free'),
+(11, 'SPR002', '172069', 'Wahyudi', 'Dekat penjual stiker', '081278991213', 'L', '19397147', 195000, 'Free'),
+(12, 'SPR003', '172043', 'Muhammad Atma Nugraha', 'Dg. Ramang City', '087312393987', 'L', '0138842917', 250000, 'Free'),
+(13, 'SPR004', '120308', 'Bang Kumis', 'Jl. Perumnas Sudiang', '081271289991', 'L', '12039138', 180000, 'Booked'),
+(14, 'SPR005', '172041', 'Muh. Saiful', 'Dekat tower, Laikang', '087823813115', 'L', '1923739', 174000, 'Free'),
+(15, 'SPR006', '11308', 'Mamang Garox', 'Masih stay disini', '081169696969', 'L', '696969', 690000, 'Free');
+
 -- --------------------------------------------------------
 
 --
@@ -79,7 +116,6 @@ CREATE TABLE `sopir` (
 CREATE TABLE `transaksi` (
   `NoTransaksi` char(8) NOT NULL,
   `NIK` char(13) DEFAULT NULL,
-  `Id_Mobil` int(3) DEFAULT NULL,
   `Tanggal_Pesan` date DEFAULT NULL,
   `Tanggal_Pinjam` date DEFAULT NULL,
   `Tanggal_Kembali_Rencana` date DEFAULT NULL,
@@ -95,8 +131,20 @@ CREATE TABLE `transaksi` (
   `Jumlah_Bayar` double(10,0) DEFAULT NULL,
   `Kembalian` double(10,0) DEFAULT NULL,
   `StatusTransaksi` enum('Proses','Mulai','Batal','Arsip','Selesai') DEFAULT NULL,
-  `Arsip` int(1) DEFAULT NULL
+  `Arsip` int(1) DEFAULT NULL,
+  `NoPlat` varchar(255) DEFAULT NULL,
+  `IdMobil` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data untuk tabel `transaksi`
+--
+
+INSERT INTO `transaksi` (`NoTransaksi`, `NIK`, `Tanggal_Pesan`, `Tanggal_Pinjam`, `Tanggal_Kembali_Rencana`, `Tanggal_Kembali_Sebenarnya`, `LamaRental`, `LamaDenda`, `Kerusakan`, `Id_Sopir`, `BiayaBBM`, `BiayaKerusakan`, `Denda`, `Total_Bayar`, `Jumlah_Bayar`, `Kembalian`, `StatusTransaksi`, `Arsip`, `NoPlat`, `IdMobil`) VALUES
+('6490bc77', '0000', '2023-06-20', '2023-06-20', '2023-06-24', NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL, 1200000, NULL, NULL, 'Proses', NULL, 'AB 2092 KL', 65),
+('6490bde6', '0000', '2023-06-20', '2023-06-20', '2023-06-29', NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL, 4050000, NULL, NULL, 'Proses', NULL, 'AB 1346 EQ', 66),
+('6490be39', '0000', '2023-06-27', '2023-06-27', '2023-06-28', NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL, 600000, NULL, NULL, 'Proses', NULL, 'AB 9873 BG', 67),
+('6490c0a5', '1111', '2023-06-22', '2023-06-24', '2023-07-01', NULL, NULL, NULL, NULL, '1', NULL, NULL, NULL, 3150000, NULL, NULL, 'Proses', NULL, 'AB 5682 OI', 69);
 
 -- --------------------------------------------------------
 
@@ -110,6 +158,18 @@ CREATE TABLE `type` (
   `NmType` varchar(50) DEFAULT NULL,
   `KdMerk` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data untuk tabel `type`
+--
+
+INSERT INTO `type` (`id`, `IdType`, `NmType`, `KdMerk`) VALUES
+(43, '1', 'Fortuner', '1'),
+(44, '2', 'Avanza', '2'),
+(45, '3', 'Venturer', '3'),
+(46, '4', 'Pajero Sport', '4'),
+(47, '5', 'Brio', '5'),
+(48, '6', 'Xpander', '6');
 
 -- --------------------------------------------------------
 
@@ -136,7 +196,13 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `NIK`, `Nama`, `NamaUser`, `Password`, `JenisKelamin`, `Alamat`, `NoTelp`, `Foto`, `RoleId`, `IsActive`) VALUES
-(1, '', 'admin', 'admin@gmail.com', 'admin', NULL, NULL, NULL, NULL, 1, 1);
+(29, '0000', 'Yoko Khmrdn', 'yoko@gmail.com', 'yoko', 'L', 'Kasihan', '088888888888', 'default.png', 3, 1),
+(31, '', 'admin', 'admin@gmail.com', 'admin', 'L', NULL, NULL, NULL, 1, 1),
+(33, '1111', 'User', 'pelanggan@gmail.com', 'pelanggan', 'L', 'Sleman', '123', NULL, 3, 1),
+(35, '2222', 'Sifaq', 'sifaq@gmail.com', 'sifaq', 'L', 'Kasihan', '123', NULL, 3, 1),
+(36, '3333', 'Ilyas', 'ilyas@gmail.com', '123', 'L', 'KulonProgo', '123', NULL, 3, 1),
+(38, '4444', 'coba', 'coba@gmail.com', '123', 'L', 'Bantul', '123', NULL, 2, 1),
+(40, '5555', 'sopir', 'sopir@gmail.com', 'sopir', 'L', 'Jetis', '085765431', NULL, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -171,7 +237,7 @@ CREATE TABLE `viewmobil` (
 ,`IdType` varchar(20)
 ,`StatusRental` enum('Jalan','Dipesan','Kosong')
 ,`HargaSewa` double(10,0)
-,`FotoMobil` varchar(100)
+,`FotoMobil` blob
 ,`NmMerk` varchar(50)
 ,`NmType` varchar(50)
 ,`JenisMobil` varchar(20)
@@ -181,38 +247,19 @@ CREATE TABLE `viewmobil` (
 -- --------------------------------------------------------
 
 --
--- Stand-in struktur untuk tampilan `viewtransaksi`
+-- Stand-in struktur untuk tampilan `viewriwayattransaksi`
 -- (Lihat di bawah untuk tampilan aktual)
 --
-CREATE TABLE `viewtransaksi` (
+CREATE TABLE `viewriwayattransaksi` (
 `NoTransaksi` char(8)
 ,`NIK` char(13)
-,`Id_Mobil` int(3)
+,`NoPlat` varchar(10)
 ,`Tanggal_Pesan` date
 ,`Tanggal_Pinjam` date
 ,`Tanggal_Kembali_Rencana` date
-,`Tanggal_Kembali_Sebenarnya` date
-,`LamaRental` int(3)
-,`LamaDenda` int(3)
-,`Kerusakan` text
-,`Id_Sopir` char(6)
-,`BiayaBBM` double(10,0)
-,`BiayaKerusakan` double(10,0)
-,`Denda` double(10,0)
-,`Total_Bayar` double(10,0)
-,`Jumlah_Bayar` double(10,0)
-,`Kembalian` double(10,0)
 ,`StatusTransaksi` enum('Proses','Mulai','Batal','Arsip','Selesai')
-,`Nama` varchar(30)
-,`NamaUser` varchar(50)
-,`NmSopir` varchar(50)
-,`TarifPerhari` double(10,0)
-,`id` int(3)
-,`Arsip` int(1)
-,`NoPlat` varchar(10)
-,`HargaSewa` double(10,0)
-,`NmMerk` varchar(50)
 ,`NmType` varchar(50)
+,`TotalHarga` double(17,0)
 );
 
 -- --------------------------------------------------------
@@ -245,9 +292,8 @@ CREATE TABLE `viewusers` (
 ,`Alamat` text
 ,`NoTelp` varchar(13)
 ,`Foto` varchar(100)
-,`RoleId` int(2)
-,`IsActive` int(1)
 ,`role` varchar(20)
+,`IsActive` int(1)
 );
 
 -- --------------------------------------------------------
@@ -262,11 +308,11 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Struktur untuk view `viewtransaksi`
+-- Struktur untuk view `viewriwayattransaksi`
 --
-DROP TABLE IF EXISTS `viewtransaksi`;
+DROP TABLE IF EXISTS `viewriwayattransaksi`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `viewtransaksi`  AS SELECT `transaksi`.`NoTransaksi` AS `NoTransaksi`, `transaksi`.`NIK` AS `NIK`, `transaksi`.`Id_Mobil` AS `Id_Mobil`, `transaksi`.`Tanggal_Pesan` AS `Tanggal_Pesan`, `transaksi`.`Tanggal_Pinjam` AS `Tanggal_Pinjam`, `transaksi`.`Tanggal_Kembali_Rencana` AS `Tanggal_Kembali_Rencana`, `transaksi`.`Tanggal_Kembali_Sebenarnya` AS `Tanggal_Kembali_Sebenarnya`, `transaksi`.`LamaRental` AS `LamaRental`, `transaksi`.`LamaDenda` AS `LamaDenda`, `transaksi`.`Kerusakan` AS `Kerusakan`, `transaksi`.`Id_Sopir` AS `Id_Sopir`, `transaksi`.`BiayaBBM` AS `BiayaBBM`, `transaksi`.`BiayaKerusakan` AS `BiayaKerusakan`, `transaksi`.`Denda` AS `Denda`, `transaksi`.`Total_Bayar` AS `Total_Bayar`, `transaksi`.`Jumlah_Bayar` AS `Jumlah_Bayar`, `transaksi`.`Kembalian` AS `Kembalian`, `transaksi`.`StatusTransaksi` AS `StatusTransaksi`, `users`.`Nama` AS `Nama`, `users`.`NamaUser` AS `NamaUser`, `sopir`.`NmSopir` AS `NmSopir`, `sopir`.`TarifPerhari` AS `TarifPerhari`, `users`.`id` AS `id`, `transaksi`.`Arsip` AS `Arsip`, `viewmobil`.`NoPlat` AS `NoPlat`, `viewmobil`.`HargaSewa` AS `HargaSewa`, `viewmobil`.`NmMerk` AS `NmMerk`, `viewmobil`.`NmType` AS `NmType` FROM (((`transaksi` join `sopir` on(`transaksi`.`Id_Sopir` = `sopir`.`IdSopir`)) join `users` on(`transaksi`.`NIK` = `users`.`NIK`)) join `viewmobil` on(`transaksi`.`Id_Mobil` = `viewmobil`.`id`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `viewriwayattransaksi`  AS SELECT `t`.`NoTransaksi` AS `NoTransaksi`, `t`.`NIK` AS `NIK`, `m`.`NoPlat` AS `NoPlat`, `t`.`Tanggal_Pesan` AS `Tanggal_Pesan`, `t`.`Tanggal_Pinjam` AS `Tanggal_Pinjam`, `t`.`Tanggal_Kembali_Rencana` AS `Tanggal_Kembali_Rencana`, `t`.`StatusTransaksi` AS `StatusTransaksi`, `ty`.`NmType` AS `NmType`, `m`.`HargaSewa`* (to_days(`t`.`Tanggal_Kembali_Rencana`) - to_days(`t`.`Tanggal_Pinjam`)) AS `TotalHarga` FROM ((`transaksi` `t` join `mobil` `m` on(`t`.`NoPlat` = `m`.`NoPlat`)) join `type` `ty` on(`m`.`IdType` = `ty`.`IdType`)) ;
 
 -- --------------------------------------------------------
 
@@ -284,7 +330,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `viewusers`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `viewusers`  AS SELECT `users`.`id` AS `id`, `users`.`NIK` AS `NIK`, `users`.`Nama` AS `Nama`, `users`.`NamaUser` AS `NamaUser`, `users`.`Password` AS `Password`, `users`.`JenisKelamin` AS `JenisKelamin`, `users`.`Alamat` AS `Alamat`, `users`.`NoTelp` AS `NoTelp`, `users`.`Foto` AS `Foto`, `users`.`RoleId` AS `RoleId`, `users`.`IsActive` AS `IsActive`, `user_role`.`role` AS `role` FROM (`users` join `user_role` on(`users`.`RoleId` = `user_role`.`id`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `viewusers`  AS SELECT `users`.`id` AS `id`, `users`.`NIK` AS `NIK`, `users`.`Nama` AS `Nama`, `users`.`NamaUser` AS `NamaUser`, `users`.`Password` AS `Password`, `users`.`JenisKelamin` AS `JenisKelamin`, `users`.`Alamat` AS `Alamat`, `users`.`NoTelp` AS `NoTelp`, `users`.`Foto` AS `Foto`, `user_role`.`role` AS `role`, `users`.`IsActive` AS `IsActive` FROM (`users` join `user_role` on(`users`.`RoleId` = `user_role`.`id`)) ;
 
 --
 -- Indexes for dumped tables
@@ -340,31 +386,31 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT untuk tabel `merk`
 --
 ALTER TABLE `merk`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT untuk tabel `mobil`
 --
 ALTER TABLE `mobil`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT untuk tabel `sopir`
 --
 ALTER TABLE `sopir`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `type`
 --
 ALTER TABLE `type`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT untuk tabel `user_role`

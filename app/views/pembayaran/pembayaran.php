@@ -1,46 +1,87 @@
 <?php
-require_once __DIR__ . '/../../config/database.php';
+require_once(__DIR__ . '/../../config/database.php');
+require_once(__DIR__ . '/../../../vendor/midtrans-php-master/Midtrans.php');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve form values
-    $NoTransaksi = $_POST['NoTransaksi'];
-    $Total_Bayar = $_POST['Total_Bayar'];
-    $namaPengirim = $_POST['namaPengirim'];
-    $bankPengirim = $_POST['bankPengirim'];
-    $tanggalPembayaran = $_POST['tanggalPembayaran'];
+// Check if data is sent from booking_form.php
+if (isset($_GET['NoPlat']) && isset($_GET['IdType'])) {
+    $NoPlat = $_GET['NoPlat'];
+    $IdType = $_GET['IdType'];
 
-    // Check if the transaction number exists in the table
-    $checkQuery = "SELECT * FROM transaksi WHERE NoTransaksi = '$NoTransaksi'";
-    $checkResult = mysqli_query($db, $checkQuery);
+    // Retrieve the data from the database based on NoPlat
+    $queryTransaksi = "SELECT NoTransaksi, TotalHarga FROM viewriwayattransaksi WHERE NoPlat = '$NoPlat'";
+    $resultTransaksi = mysqli_query($db, $queryTransaksi);
 
-    if (mysqli_num_rows($checkResult) > 0) {
-        // Update the transaction status and payment details in the database
-        $query = "UPDATE transaksi SET StatusTransaksi = 'Lunas', NamaPengirim = '$namaPengirim', BankPengirim = '$bankPengirim', TanggalPembayaran = '$tanggalPembayaran' WHERE NoTransaksi = '$NoTransaksi'";
+    if (mysqli_num_rows($resultTransaksi) > 0) {
+        $rowTransaksi = mysqli_fetch_assoc($resultTransaksi);
+        $NoTransaksi = $rowTransaksi['NoTransaksi'];
+        $Jumlah_Bayar = $rowTransaksi['TotalHarga'];
+    }
 
-        // Execute query
-        if (mysqli_query($db, $query)) {
-            // Redirect to booking success page
-            header("Location: ../form/booking_success.php");
-            exit();
+    // Check if the form is submitted
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Retrieve form values
+        $NoTransaksi = uniqid();
+        $NIK = $_POST['NIK'];
+        $Tanggal_Pesan = $_POST['Tanggal_Pesan'];
+        $Tanggal_Pinjam = $_POST['Tanggal_Pinjam'];
+        $Tanggal_Kembali_Rencana = $_POST['Tanggal_Kembali_Rencana'];
+        $Id_Sopir = $_POST['Id_Sopir'];
+
+        // Calculate the total rental price
+        $Tanggal_PinjamObj = new DateTime($Tanggal_Pinjam);
+        $Tanggal_Kembali_RencanaObj = new DateTime($Tanggal_Kembali_Rencana);
+        $lamaPinjam = $Tanggal_PinjamObj->diff($Tanggal_Kembali_RencanaObj)->days;
+
+        $Jumlah_Bayar = $hargaSewa * $lamaPinjam;
+
+        // Check if the transaction number already exists in the table
+        $checkQuery = "SELECT * FROM transaksi WHERE NoTransaksi = '$NoTransaksi'";
+        $checkResult = mysqli_query($db, $checkQuery);
+
+        if (mysqli_num_rows($checkResult) > 0) {
+            // If the transaction number already exists, display an error message or ask the user to enter a different transaction number
+            echo '<div class="alert alert-danger" role="alert">
+                        Nomor transaksi sudah ada. Silakan masukkan nomor transaksi yang berbeda.
+                    </div>';
         } else {
-            // Display the actual MySQL error for debugging
-            echo '<div class="alert alert-danger" role="alert">' . mysqli_error($db) . '</div>';
+            // Save data to the database
+            $queryInsert = "INSERT INTO transaksi (NoTransaksi, NIK, Tanggal_Pesan, Tanggal_Pinjam, Tanggal_Kembali_Rencana, Id_Sopir, StatusTransaksi, Jumlah_Bayar, IdMobil, NoPlat)
+                            VALUES ('$NoTransaksi', '$NIK', '$Tanggal_Pesan', '$Tanggal_Pinjam', '$Tanggal_Kembali_Rencana', '$Id_Sopir', 'Proses', '$Jumlah_Bayar', '$NoPlat')";
+
+            // Execute query
+            if (mysqli_query($db, $queryInsert)) {
+                // Configure Midtrans
+                \Midtrans\Config::$serverKey = 'localhost';
+                \Midtrans\Config::$isProduction = false;
+
+                // Create a new transaction in Midtrans
+                $transaction_details = array(
+                    'order_id' => $NoTransaksi,
+                    'gross_amount' => $Jumlah_Bayar
+                );
+
+                $transaction = \Midtrans\Snap::createTransaction($transaction_details);
+                if ($transaction) {
+                    // Redirect to Midtrans payment page
+                    header('Location: booking_success.php?NoTransaksi=' . $NoTransaksi);
+                    exit();
+                } else {
+                    // Handle transaction creation error
+                    echo 'Terjadi kesalahan saat membuat transaksi. Silakan coba lagi.';
+                }
+            } else {
+                // Handle query execution error
+                echo 'Terjadi kesalahan saat menyimpan data transaksi. Silakan coba lagi.';
+            }
         }
     }
 }
 
-// Retrieve transaction data from the database
-$NoTransaksi = $_GET['NoTransaksi'];
-$query = "SELECT * FROM transaksi WHERE NoTransaksi = '$NoTransaksi'";
-$result = mysqli_query($db, $query);
-$transaksi = mysqli_fetch_assoc($result);
-
-// Retrieve booking data from the database
-$bookingId = $transaksi['IdBooking'];
-$bookingQuery = "SELECT * FROM booking WHERE IdBooking = '$bookingId'";
-$bookingResult = mysqli_query($db, $bookingQuery);
-$booking = mysqli_fetch_assoc($bookingResult);
 ?>
+
+
+
+
 
 <!DOCTYPE html>
 <html>
@@ -88,32 +129,33 @@ $booking = mysqli_fetch_assoc($bookingResult);
     <!-- Pembayaran -->
     <div class="container">
         <h1 class="mt-4 text-center">Pembayaran</h1>
-        <form method="POST" action="">
+        <form method="POST" action="../form/booking_success.php">
+            <!-- Form fields -->
             <div class="mb-3">
-                <label for="NoTransaksi" class="form-label">Nomor Transaksi:</label>
-                <input type="text" id="NoTransaksi" name="NoTransaksi" class="form-control" value="<?php echo $transaksi['NoTransaksi'] ?>" required readonly>
+                <label for="NoTransaksi" class="form-label">Nomor Transaksi</label>
+                <input type="text" class="form-control" id="NoTransaksi" name="NoTransaksi" value="<?php echo $NoTransaksi; ?>" readonly>
             </div>
             <div class="mb-3">
-                <label for="Total_Bayar" class="form-label">Total Harga:</label>
-                <input type="text" id="Total_Bayar" name="Total_Bayar" class="form-control" value="<?php echo $transaksi['Total_Bayar'] ?>" required readonly>
+                <label for="Total_Bayar" class="form-label">Total Bayar</label>
+                <input type="text" class="form-control" id="Total_Bayar" name="Total_Bayar" value="<?php echo $Jumlah_Bayar; ?>" readonly>
             </div>
             <div class="mb-3">
-                <label for="namaPengirim" class="form-label">Nama Pengirim:</label>
-                <input type="text" id="namaPengirim" name="namaPengirim" class="form-control" required>
+                <label for="namaPengirim" class="form-label">Nama Pengirim</label>
+                <input type="text" class="form-control" id="namaPengirim" name="namaPengirim" required>
             </div>
             <div class="mb-3">
-                <label for="bankPengirim" class="form-label">Bank Pengirim:</label>
-                <input type="text" id="bankPengirim" name="bankPengirim" class="form-control" required>
+                <label for="bankPengirim" class="form-label">Bank Pengirim</label>
+                <input type="text" class="form-control" id="bankPengirim" name="bankPengirim" required>
             </div>
             <div class="mb-3">
-                <label for="tanggalPembayaran" class="form-label">Tanggal Pembayaran:</label>
-                <input type="date" id="tanggalPembayaran" name="tanggalPembayaran" class="form-control" required>
+                <label for="tanggalPembayaran" class="form-label">Tanggal Pembayaran</label>
+                <input type="date" class="form-control" id="tanggalPembayaran" name="tanggalPembayaran" required>
             </div>
-
-            <button type="submit" class="btn btn-primary mb-5">Submit</button>
+            <button type="submit" class="btn btn-primary mb-5">Bayar Sekarang</button>
         </form>
     </div>
     <!-- End Pembayaran -->
+
 
     <!-- Footer -->
     <footer class="footer">

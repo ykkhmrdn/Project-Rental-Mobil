@@ -4,26 +4,24 @@ require_once __DIR__ . '/../../config/database.php';
 // Initialize variables
 $Total_Bayar = 0;
 
-if (isset($_GET['type'])) {
-    $carType = $_GET['type'];
-} else {
-    // Handle the case when no type parameter is provided
-    // For example, redirect the user back to the car listing page
+if (!isset($_GET['NoPlat']) || !isset($_GET['IdType'])) {
+    // Jika parameter NoPlat atau IdType tidak ada, arahkan pengguna kembali ke halaman daftar mobil
     header("Location: ../../pelanggan/daftar-mobil.php");
     exit();
 }
 
-// Example usage of database connection
-$query = "SELECT m.HargaSewa FROM mobil m
-          JOIN type t ON m.IdType = t.IdType
-          WHERE t.NmType = '$carType'";
+// Mengambil IdMobil dan NoPlat dari card mobil
+$NoPlat = $_GET['NoPlat'];
+$IdType = $_GET['IdType'];
 
-$result = mysqli_query($db, $query);
+// Mengambil data mobil berdasarkan NoPlat
+$queryMobil = "SELECT id, HargaSewa FROM mobil WHERE NoPlat = '$NoPlat'";
+$resultMobil = mysqli_query($db, $queryMobil);
 
-// Check if the car type exists
-if (mysqli_num_rows($result) > 0) {
-    $row = mysqli_fetch_assoc($result);
-    $hargaSewa = $row['HargaSewa'];
+if (mysqli_num_rows($resultMobil) > 0) {
+    $rowMobil = mysqli_fetch_assoc($resultMobil);
+    $id = $rowMobil['id'];
+    $hargaSewa = $rowMobil['HargaSewa'];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Retrieve form values
@@ -52,13 +50,13 @@ if (mysqli_num_rows($result) > 0) {
                 </div>';
         } else {
             // Save data to the database
-            $query = "INSERT INTO transaksi (NoTransaksi, NIK, Tanggal_Pesan, Tanggal_Pinjam, Tanggal_Kembali_Rencana, Id_Sopir, StatusTransaksi, Total_Bayar) 
-                      VALUES ('$NoTransaksi', '$nik', '$tanggalPesan', '$tanggalPinjam', '$tanggalKembaliRencana', '$idSopir', 'Proses', '$Total_Bayar')";
+            $queryInsert = "INSERT INTO transaksi (NoTransaksi, NIK, Tanggal_Pesan, Tanggal_Pinjam, Tanggal_Kembali_Rencana, Id_Sopir, StatusTransaksi, Total_Bayar, IdMobil, NoPlat)
+                        VALUES ('$NoTransaksi', '$nik', '$tanggalPesan', '$tanggalPinjam', '$tanggalKembaliRencana', '$idSopir', 'Proses', '$Total_Bayar', '$id', '$NoPlat')";
 
             // Execute query
-            if (mysqli_query($db, $query)) {
+            if (mysqli_query($db, $queryInsert)) {
                 // Redirect to booking success page
-                header("Location: ../pembayaran/pembayaran.php");
+                header("Location: ../pembayaran/pembayaran.php?NoPlat=$NoPlat&IdType=$IdType");
                 exit();
             } else {
                 // Display the actual MySQL error for debugging
@@ -67,7 +65,7 @@ if (mysqli_num_rows($result) > 0) {
         }
     }
 } else {
-    // Handle the case when the car type doesn't exist
+    // Handle the case when the car doesn't exist
     // For example, redirect the user back to the car listing page
     header("Location: ../../pelanggan/daftar-mobil.php");
     exit();
@@ -123,11 +121,13 @@ if (mysqli_num_rows($result) > 0) {
         <h1 class="mt-4 text-center">Form Booking Mobil</h1>
         <form method="POST" action="">
             <div class="mb-3">
-                <label for="carType" class="form-label">Type Mobil:</label>
-                <input type="text" id="carType" name="carType" class="form-control" value="<?php echo isset($_GET['type']) ? $_GET['type'] : ''; ?>" required readonly>
+                <label for="NoPlat" class="form-label">No Plat Mobil :</label>
+                <input type="text" id="NoPlat" name="NoPlat" class="form-control" value="<?php echo isset($_GET['NoPlat']) ? $_GET['NoPlat'] : ''; ?>" required readonly>
             </div>
-            <!-- Add hidden input elements to store other data -->
-            <input type="hidden" id="idMobil" name="idMobil" value="<?php echo isset($_GET['idMobil']) ? $_GET['idMobil'] : ''; ?>">
+            <!-- Add hidden input elements to store NoPlat and IdType -->
+            <input type="hidden" id="NoPlat" name="NoPlat" value="<?php echo $NoPlat; ?>">
+            <input type="hidden" id="IdType" name="IdType" value="<?php echo $IdType; ?>">
+
             <div class="mb-3">
                 <label for="nik" class="form-label">NIK Pelanggan:</label>
                 <input type="text" id="nik" name="nik" class="form-control" required>
@@ -152,13 +152,8 @@ if (mysqli_num_rows($result) > 0) {
                 </select>
             </div>
 
-            <!-- Display total payment -->
-            <div class="mb-3">
-                <label for="Total_Bayar" class="form-label">Total Harga:</label>
-                <input type="text" id="Total_Bayar" name="Total_Bayar" class="form-control" value="<?php echo $Total_Bayar; ?>" readonly>
-            </div>
-
-            <button type="submit" class="btn btn-primary mb-5">Submit</button>
+        
+            <button type="submit" class="btn btn-primary mb-5" style="background-color: #E57C23; border-color: #E57C23;">Pesan</button>
         </form>
     </div>
     <!-- End From Booking -->
@@ -196,16 +191,14 @@ if (mysqli_num_rows($result) > 0) {
         <div class="container">
             <div class="row text-center">
                 <div class="col-lg-12">
-                    <p>© 2023 JAVA ELLTRANS Car Rental - All Rights Reserved.</p>
+                    <p>© 2023 JAVA ELLTRANS Car Rental. All rights reserved</p>
                 </div>
             </div>
         </div>
     </section>
     <!-- End Copyright -->
 
-    <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <!-- End JS -->
 </body>
 
 </html>

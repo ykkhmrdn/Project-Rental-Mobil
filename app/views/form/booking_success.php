@@ -110,7 +110,10 @@
             }
             ?>
 
-            <p class="booking-success-info">Terima kasih telah melakukan booking mobil. Cetak kuitansi riwayat transaksi dan serahkan ke petugas JavaEllTrans! Silahkan datang ke tempat JavaEllTrans saat akan mengambil mobilnya, dan pembayaran dilakukan di lokasi saat akan mengambil mobilnya.</p>
+            <p class="booking-success-info">Terima kasih telah melakukan booking mobil di JavaEllTrans😊.
+                <br> Cetak kuitansi riwayat transaksi dan serahkan ke petugas JavaEllTrans!
+                <br>
+                Silahkan datang ke tempat JavaEllTrans saat akan mengambil mobilnya!</p>
 
             <a href="../pelanggan/riwayat_transaksi.php" class="btn btn-primary booking-success-btn">Cek Riwayat Transaksi</a>
         </div>

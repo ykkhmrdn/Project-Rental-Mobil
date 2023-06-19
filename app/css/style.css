@@ -136,6 +136,45 @@ h1 {
   margin-bottom: 10px;
 }
 
+.team-member {
+  background-color: #f8f8f8 !important;
+  padding: 15px !important;
+  margin-bottom: 30px !important;
+  transition: background-color 0.3s ease !important;
+  -webkit-transition: background-color 0.3s ease !important;
+  -moz-transition: background-color 0.3s ease !important;
+  -ms-transition: background-color 0.3s ease !important;
+  -o-transition: background-color 0.3s ease !important;
+}
+
+.team-member:hover {
+  background-color: #e9e9e9 !important;
+}
+
+.team-member-img {
+  width: 150px !important;
+  height: 150px !important;
+  object-fit: cover !important;
+  border-radius: 50% !important;
+  margin-bottom: 15px !important;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) !important;
+  -webkit-border-radius: 50% !important;
+  -moz-border-radius: 50% !important;
+  -ms-border-radius: 50% !important;
+  -o-border-radius: 50% !important;
+}
+
+.team-member h4 {
+  font-size: 20px !important;
+  font-weight: bold !important;
+  margin-bottom: 10px !important;
+}
+
+.team-member p {
+  font-size: 16px !important;
+  color: #888 !important;
+}
+
 /* Car-Collection */
 .car-collection {
   padding-bottom: 100px;

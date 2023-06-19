@@ -78,12 +78,11 @@
           </div>
           <div class="mb-3">
             <label for="Role">Role</label>
-            <select class="form-control" name="RoleId" id="RoleId" required>
-              <option value="" selected>Pilih Role</option>
-              <option value="2">Karyawan</option>
-              <option value="3">Pelanggan</option>
+            <select class="form-control" name="RoleId" id="RoleId" readonly>
+              <option value="3" selected>Pelanggan</option>
             </select>
           </div>
+
           <br>
           <button type="submit" value="Simpan" name="simpan" class="btn btn-primary mb-5">Register</button>
         </form>

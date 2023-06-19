@@ -54,7 +54,9 @@ $result = mysqli_query($db, $sql);
     <div class="jumbotron">
         <div class="container">
             <h1 class="display-3">JAVA ELLTRANS <br> Car Rental</h1>
-            <p class="lead">Sewa mobil berkualitas dengan harga terjangkau!</p>
+            <p class="lead">Jelajahi kebebasan dengan menyewa mobil berkualitas tinggi
+                <br>
+                 dan penuh kenyamanan dengan harga yang tak akan menguras kantong Anda!</p>
         </div>
     </div>
 
@@ -75,14 +77,14 @@ $result = mysqli_query($db, $sql);
                             </div>
                             <div class="col-lg-4 mt-5">
                                 <div class="card-text">
-                                    <img src="https://localhost/project-rental-mobil/app/img/assets/harga terjangkau.png" alt="">
+                                    <img src="https://localhost/project-rental-mobil/app/img/assets/pelayanan.png" alt="">
                                     <h3>Pelayanan Prima</h3>
                                     <p class="card-text">Costumer sevice kami siap melayani Anda kapan pun. Dan siap dengan media apapun, mulai dari via SMS, Whatsapp, E-mail, maupun telepon secara langsung.</p>
                                 </div>
                             </div>
                             <div class="col-lg-4 mt-5">
                                 <div class="card-text">
-                                    <img src="https://localhost/project-rental-mobil/app/img/assets/harga terjangkau.png" alt="">
+                                    <img src="https://localhost/project-rental-mobil/app/img/assets/kualitas.png" alt="">
                                     <h3>Kualitas Terbaik</h3>
                                     <p class="card-text">Perusahaan kami didukung dengan tim yang profesional dan dikelola oleh SDM pilihan serta unit mobil yang variatif, mulai dari city car, sampai mobil rombongan dan mobil mewah untuk pengantin.</p>
                                 </div>
