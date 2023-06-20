@@ -138,7 +138,7 @@ $query = mysqli_query($db, $sql);
                                                 echo "<td>" . $transaksi['Tanggal_Pesan'] . "</td>";
                                                 echo "<td>" . $transaksi['Tanggal_Pinjam'] . "</td>";
                                                 echo "<td>" . $transaksi['Tanggal_Kembali_Rencana'] . "</td>";
-                                                echo "<td>" . $transaksi['Total_Bayar'] . "</td>";
+                                                echo "<td>" . $transaksi['TotalHarga'] . "</td>";
                                                 echo "<td>" . $transaksi['StatusTransaksi'] . "</td>";
                                                 echo "<td>
                                                         <div class='btn-group' role='group'>
