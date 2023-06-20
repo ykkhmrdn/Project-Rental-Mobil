@@ -111,7 +111,7 @@
             ?>
 
             <p class="booking-success-info">Terima kasih telah melakukan booking mobil di JavaEllTrans😊.
-                <br> Cetak kuitansi riwayat transaksi dan serahkan ke petugas JavaEllTrans!
+                <br> Segera lakukan pembayaran kemudian cetak kuitansi riwayat transaksi dan serahkan ke petugas JavaEllTrans!
                 <br>
                 Silahkan datang ke tempat JavaEllTrans saat akan mengambil mobilnya!</p>
 

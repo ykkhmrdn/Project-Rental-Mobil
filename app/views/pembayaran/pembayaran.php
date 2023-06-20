@@ -140,6 +140,10 @@ if (isset($_GET['NoPlat']) && isset($_GET['IdType'])) {
                 <input type="text" class="form-control" id="Total_Bayar" name="Total_Bayar" value="<?php echo $Jumlah_Bayar; ?>" readonly>
             </div>
             <div class="mb-3">
+                <label for="rekening_admin" class="form-label">Silahkan Transfer ke No Rekening Berikut</label>
+                <input type="text" class="form-control" id="rekening_admin" name="rekening_admin" value="858735765 (BCA)" readonly>
+            </div>
+            <div class="mb-3">
                 <label for="namaPengirim" class="form-label">Nama Pengirim</label>
                 <input type="text" class="form-control" id="namaPengirim" name="namaPengirim" required>
             </div>
@@ -151,7 +155,7 @@ if (isset($_GET['NoPlat']) && isset($_GET['IdType'])) {
                 <label for="tanggalPembayaran" class="form-label">Tanggal Pembayaran</label>
                 <input type="date" class="form-control" id="tanggalPembayaran" name="tanggalPembayaran" required>
             </div>
-            <button type="submit" class="btn btn-primary mb-5">Bayar Sekarang</button>
+            <button type="submit" class="btn btn-primary mb-5">Pesan Sekarang</button>
         </form>
     </div>
     <!-- End Pembayaran -->
