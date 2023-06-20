@@ -2,7 +2,7 @@
 session_start();
 include("/xampp/htdocs/project-rental-mobil/app/config/database.php");
 
-$sql = "SELECT m.*, merk.NmMerk, type.IdType FROM mobil m 
+$sql = "SELECT m.*, merk.NmMerk, type.NmType FROM mobil m 
         JOIN merk ON m.KdMerk = merk.KdMerk 
         JOIN type ON m.IdType = type.IdType";
 $result = mysqli_query($db, $sql);
@@ -47,7 +47,7 @@ $result = mysqli_query($db, $sql);
                 $statusRental = $row['StatusRental'];
                 $hargaSewa = $row['HargaSewa'];
                 $merk = $row['NmMerk'];
-                $type = $row['IdType'];
+                $type = $row['NmType'];
                 $transmisi = $row['Transmisi'];
             ?>
                 <div class="col-lg-3 col-md-6 mt-5">
