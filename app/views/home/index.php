@@ -53,7 +53,7 @@ $result = mysqli_query($db, $sql);
     <!-- Jumbotron -->
     <div class="jumbotron">
         <div class="container">
-            <h1 class="display-3">JAVA ELLTRANS <br> Car Rental</h1>
+            <h1 class="display-3" style="color:#E8AA42">JAVA ELLTRANS <br> Car Rental</h1>
             <p class="lead">Jelajahi kebebasan dengan menyewa mobil berkualitas tinggi
                 <br>
                  dan penuh kenyamanan dengan harga yang tak akan menguras kantong Anda!</p>
