@@ -18,8 +18,19 @@ if (!isset($_SESSION["nik"])) {
 // Mengambil NIK pengguna yang sedang login
 $nik = $_SESSION['nik'];
 
-// Mengambil data riwayat transaksi berdasarkan NIK pengguna
+// Mengambil data riwayat transaksi berdasarkan NIK pengguna dan diurutkan berdasarkan Nama Type
 $query = "SELECT * FROM viewriwayattransaksi WHERE NIK = '$nik'";
+
+// Periksa apakah parameter sort ada dalam URL
+if (isset($_GET['sort'])) {
+    $sort = $_GET['sort'];
+    if ($sort == 'asc') {
+        $query .= " ORDER BY NmType ASC";
+    } elseif ($sort == 'desc') {
+        $query .= " ORDER BY NmType DESC";
+    }
+}
+
 $result = mysqli_query($db, $query);
 ?>
 
@@ -39,7 +50,7 @@ $result = mysqli_query($db, $query);
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav text-center"> <!-- Added text-center class -->
+                <ul class="navbar-nav text-center">
                     <li class="nav-item">
                         <a class="navbar-brand" href="#"> <img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="" height="30px"></a>
                     </li>
@@ -49,8 +60,6 @@ $result = mysqli_query($db, $query);
                     <li class="nav-item">
                         <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'daftar-mobil.php') ? 'active' : ''; ?>" href="../pelanggan/daftar-mobil.php">Koleksi Mobil</a>
                     </li>
-
-
                 </ul>
             </div>
 
@@ -59,7 +68,6 @@ $result = mysqli_query($db, $query);
                 <a href="../profil/profil.php" class="btn me-md-2 text-white" type="button" style="background-color: #E57C23;">Profile</a>
                 <!-- Tombol Logout -->
                 <a href="../home/index.php" class="btn text-white me-md-5" type="button" style="background-color: #E57C23;">Logout</a>
-
             </div>
         </div>
     </nav>
@@ -72,7 +80,7 @@ $result = mysqli_query($db, $query);
                 <tr>
                     <th>No Transaksi</th>
                     <th>NIK</th>
-                    <th>Nama Type</th>
+                    <th>Nama Type <a href="?sort=asc"><i class="bi bi-sort-alpha-down"></i></a><a href="?sort=desc"><i class="bi bi-sort-alpha-down-alt"></i></a></th>
                     <th>Tanggal Pesan</th>
                     <th>Tanggal Pinjam</th>
                     <th>Tanggal Kembali Rencana</th>
@@ -93,14 +101,13 @@ $result = mysqli_query($db, $query);
                     echo "<td>" . $row['Tanggal_Kembali_Rencana'] . "</td>";
                     echo "<td>" . $row['TotalHarga'] . "</td>";
                     echo "<td>" . $row['StatusTransaksi'] . "</td>";
-                    echo '<td><a href="cetak_kuitansi.php?notransaksi=' . $row['NoTransaksi'] . '">Cetak Kuitansi</a></td>';
+                    echo '<td><a href="cetak_kuitansi.php?notransaksi=' . $row['NoTransaksi'] . '" class="btn btn-secondary">Cetak Kuitansi</a></td>';
                     echo "</tr>";
                 }
                 ?>
             </tbody>
         </table>
     </div>
-
 
     <!-- Footer -->
     <footer class="footer">
@@ -139,7 +146,6 @@ $result = mysqli_query($db, $query);
             </div>
         </div>
     </section>
-
 
     <!-- Include Bootstrap JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

@@ -161,7 +161,6 @@
                                                 echo "<td>" . $viewusers['IsActive'] . "</td>";
                                                 echo "<td>
                                                 <div class='btn-group' role='group'>
-                                                <a href='edit-user.php?id=" . $viewusers['id'] . "' class='btn btn-sm btn-primary'>Edit</a>
                                                 <a href='hapus-user.php?id=" . $viewusers['id'] . "' class='btn btn-sm btn-danger' onclick='return confirmDelete()'>Delete</a>
                                                 <a href='aktivasi-user.php?id=" . $viewusers['id'] . "' class='btn btn-sm btn-success'>Aktivasi</a>
                                             </div>

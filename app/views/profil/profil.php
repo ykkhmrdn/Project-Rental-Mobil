@@ -15,12 +15,51 @@ if (isset($_SESSION['nik'])) {
 
     // Check if user exists
     if ($result && mysqli_num_rows($result) > 0) {
+        if (isset($_SESSION['update_success'])) {
+            // Fetch updated user data from the database
+            $updatedQuery = "SELECT * FROM users WHERE NIK = $nik";
+            $updatedResult = mysqli_query($db, $updatedQuery);
+
+            // Check if updated user data exists
+            if ($updatedResult && mysqli_num_rows($updatedResult) > 0) {
+                $updatedUser = mysqli_fetch_assoc($updatedResult);
+
+                // Update user data in session
+                $user = $updatedUser;
+            }
+
+            unset($_SESSION['update_success']);
+        }
+
         $user = mysqli_fetch_assoc($result);
     } else {
         die("User not found.");
     }
 } else {
     die("User ID not found in session.");
+}
+
+// Handle form submission for updating user data
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Retrieve updated user data from the form
+    $NIK = $_POST['NIK'];
+    $Nama = $_POST['Nama'];
+    $NamaUser = $_POST['NamaUser'];
+    $Password = $_POST['Password'];
+    $JenisKelamin = $_POST['JenisKelamin'];
+    $Alamat = $_POST['Alamat'];
+    $NoTelp = $_POST['NoTelp'];
+
+    // Update user data in the database
+    $updateQuery = "UPDATE users SET NIK = '$NIK', Nama = '$Nama', NamaUser = '$NamaUser', Password = '$Password', JenisKelamin = '$JenisKelamin', Alamat = '$Alamat', NoTelp = '$NoTelp' WHERE NIK = $nik";
+    $updateResult = mysqli_query($db, $updateQuery);
+
+    if ($updateResult) {
+        // Update successful
+        $_SESSION['update_success'] = true;
+    } else {
+        die("Failed to update user data.");
+    }
 }
 ?>
 
@@ -29,7 +68,7 @@ if (isset($_SESSION['nik'])) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Riwayat Transaksi | JAVA ELLTRANS Car Rental</title>
+    <title>Profil Pengguna | JAVA ELLTRANS Car Rental</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://localhost/project-rental-mobil/app/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
@@ -73,31 +112,52 @@ if (isset($_SESSION['nik'])) {
                 <div class="card">
                     <div class="card-body">
                         <h1 class="card-title text-center">Profil Pengguna</h1>
-                        <table class="table">
-                            <tr>
-                                <td>ID</td>
-                                <td><?php echo $user['id']; ?></td>
-                            </tr>
-                            <tr>
-                                <td>Nama</td>
-                                <td><?php echo $user['Nama']; ?></td>
-                            </tr>
-                            <tr>
-                                <td>Email</td>
-                                <td><?php echo $user['NamaUser']; ?></td>
-                            </tr>
-                            <tr>
-                                <td>No. Telepon</td>
-                                <td><?php echo $user['NoTelp']; ?></td>
-                            </tr>
+                        <form method="POST">
+                            <div class="mb-3">
+                                <label for="NIK" class="form-label">NIK</label>
+                                <input type="text" class="form-control" id="NIK" name="NIK" value="<?php echo isset($updatedUser['NIK']) ? $updatedUser['NIK'] : $user['NIK']; ?>" required>
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="Nama" class="form-label">Nama</label>
+                                <input type="text" class="form-control" id="Nama" name="Nama" value="<?php echo isset($updatedUser['Nama']) ? $updatedUser['Nama'] : $user['Nama']; ?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="NamaUser" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="NamaUser" name="NamaUser" value="<?php echo isset($updatedUser['NamaUser']) ? $updatedUser['NamaUser'] : $user['NamaUser']; ?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="Password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="Password" name="Password" value="<?php echo isset($updatedUser['Password']) ? $updatedUser['Password'] : $user['Password']; ?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="JenisKelamin" class="form-label">Jenis Kelamin</label>
+                                <select class="form-select" id="JenisKelamin" name="JenisKelamin" required>
+                                    <option value="L" <?php if ($user['JenisKelamin'] == 'Laki-laki') echo 'selected'; ?>>Laki-laki</option>
+                                    <option value="P" <?php if ($user['JenisKelamin'] == 'Perempuan') echo 'selected'; ?>>Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="Alamat" class="form-label">Alamat</label>
+                                <input type="text" class="form-control" id="Alamat" name="Alamat" value="<?php echo isset($updatedUser['Alamat']) ? $updatedUser['Alamat'] : $user['Alamat']; ?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="NoTelp" class="form-label">No. Telepon</label>
+                                <input type="text" class="form-control" id="NoTelp" name="NoTelp" value="<?php echo isset($updatedUser['NoTelp']) ? $updatedUser['NoTelp'] : $user['NoTelp']; ?>" required>
+                            </div>
                             <!-- Add more profile fields as needed -->
-                        </table>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     <!-- End Profile Section -->
+
 
     <!-- Footer -->
     <footer class="footer">
@@ -140,6 +200,14 @@ if (isset($_SESSION['nik'])) {
 
     <!-- Include Bootstrap JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        <?php if (isset($_SESSION['update_success'])) : ?>
+            alert('Profil pengguna berhasil diupdate!');
+            <?php unset($_SESSION['update_success']); ?>
+        <?php endif; ?>
+    </script>
+
 </body>
 
 </html>
