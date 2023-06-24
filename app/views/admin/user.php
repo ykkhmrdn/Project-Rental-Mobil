@@ -47,14 +47,22 @@
         </nav>
         <!-- End Navbar -->
 
-       <!-- Main Sidebar Container -->
-       <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Sidebar items -->
+                        <li class="nav-item">
+                            <a href="./dashboard.php" class="nav-link">
+                                <p>
+                                    <img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="Javaelltrans Logo" height="30px" width="200px">
+                                </p>
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             <a href="./edit-mobil.php" class="nav-link">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-car-front" viewBox="0 0 16 16">
@@ -101,7 +109,12 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Data Pengguna</h3>
+                            <div class="float-right">
+                                <a href="" class="btn btn-primary" onclick="printTable()">Cetak Tabel</a>
+                                <button class="btn btn-secondary" onclick="sortTable(2)">Urutkan Nama</button>
+                            </div>
                         </div>
+
                         <!-- /.card-header -->
                         <div class="card-body">
                             <div class="table-responsive">
@@ -112,11 +125,9 @@
                                             <th>NIK</th>
                                             <th>Nama</th>
                                             <th>Nama User</th>
-                                            <th>Password</th>
                                             <th>Jenis Kelamin</th>
                                             <th>Alamat</th>
                                             <th>No. Telp</th>
-                                            <th>Foto</th>
                                             <th>Role User</th>
                                             <th>Aktivasi User</th>
                                             <th>Action</th>
@@ -143,19 +154,18 @@
                                                 echo "<td>" . $viewusers['NIK'] . "</td>";
                                                 echo "<td>" . $viewusers['Nama'] . "</td>";
                                                 echo "<td>" . $viewusers['NamaUser'] . "</td>";
-                                                echo "<td>" . $viewusers['Password'] . "</td>";
                                                 echo "<td>" . $viewusers['JenisKelamin'] . "</td>";
                                                 echo "<td>" . $viewusers['Alamat'] . "</td>";
                                                 echo "<td>" . $viewusers['NoTelp'] . "</td>";
-                                                echo "<td>" . $viewusers['Foto'] . "</td>";
                                                 echo "<td>" . $viewusers['role'] . "</td>";
                                                 echo "<td>" . $viewusers['IsActive'] . "</td>";
                                                 echo "<td>
-                                                    <div class='btn-group' role='group'>
-                                                        <a href='edit-user.php?id=" . $viewusers['id'] . "' class='btn btn-sm btn-primary'>Edit</a>
-                                                        <a href='hapus-user.php?id=" . $viewusers['id'] . "' class='btn btn-sm btn-danger'>Delete</a>
-                                                        <a href='aktivasi-user.php?id=" . $viewusers['id'] . "' class='btn btn-sm btn-success'>Aktivasi</a>
-                                                    </div>
+                                                <div class='btn-group' role='group'>
+                                                <a href='edit-user.php?id=" . $viewusers['id'] . "' class='btn btn-sm btn-primary'>Edit</a>
+                                                <a href='hapus-user.php?id=" . $viewusers['id'] . "' class='btn btn-sm btn-danger' onclick='return confirmDelete()'>Delete</a>
+                                                <a href='aktivasi-user.php?id=" . $viewusers['id'] . "' class='btn btn-sm btn-success'>Aktivasi</a>
+                                            </div>
+                                            
                                                 </td>";
 
 
@@ -219,6 +229,51 @@
 
     <!-- AdminLTE App -->
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1.0/dist/js/adminlte.min.js"></script>
+
+    <script>
+        function printTable() {
+            window.print();
+        }
+    </script>
+
+    <script>
+        function confirmDelete() {
+            return confirm("Harap konfirmasi jika ingin menghapus user tersebut!");
+        }
+    </script>
+
+    <script>
+        function sortTable(columnIndex) {
+            let table, rows, switching, i, x, y, shouldSwitch;
+            table = document.querySelector("table");
+            switching = true;
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+
+                    x = rows[i].getElementsByTagName("td")[columnIndex];
+                    y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+    </script>
+
+
+
 </body>
 
 </html>

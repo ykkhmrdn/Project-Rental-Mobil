@@ -57,7 +57,7 @@ if (mysqli_num_rows($query) < 1) {
 
                 <!-- Right-aligned navbar links -->
                 <ul class="navbar-nav ml-auto">
-                 
+
                     <li class="nav-item">
                         <a href="../home/index.php" class="nav-link btn btn-primary">Log Out</a>
                     </li>
@@ -66,14 +66,22 @@ if (mysqli_num_rows($query) < 1) {
         </nav>
         <!-- End Navbar -->
 
-       <!-- Main Sidebar Container -->
-       <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Sidebar items -->
+                        <li class="nav-item">
+                            <a href="./dashboard.php" class="nav-link">
+                                <p>
+                                    <img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="Javaelltrans Logo" height="30px" width="200px">
+                                </p>
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             <a href="./edit-mobil.php" class="nav-link">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-car-front" viewBox="0 0 16 16">
@@ -141,11 +149,6 @@ if (mysqli_num_rows($query) < 1) {
                                     <input type="text" class="form-control" id="NamaUser" name="NamaUser" placeholder="Isikan Username" value="<?php echo $viewusers['NamaUser'] ?>" required>
                                 </div>
 
-                                <!-- Password input -->
-                                <div class="form-group">
-                                    <label for="Password">Password</label>
-                                    <input type="password" class="form-control" id="Password" name="Password" placeholder="Enter password" value="<?php echo $viewusers['Password'] ?>" required>
-                                </div>
 
                                 <!-- Gender input -->
                                 <div class="form-group">
@@ -168,18 +171,11 @@ if (mysqli_num_rows($query) < 1) {
                                     <input type="text" class="form-control" id="NoTelp" name="NoTelp" placeholder="Isikan No Telp" value="<?php echo $viewusers['NoTelp'] ?>" required>
                                 </div>
 
-                                <!-- Profile picture input -->
-                                <div class="form-group">
-                                    <label for="Foto">Foto Pengguna</label>
-                                    <input type="file" class="form-control-file" id="Foto" name="Foto">
-                                </div>
-
                                 <!-- Role input -->
                                 <div class="form-group">
                                     <label for="role">Role</label>
                                     <select class="form-control" id="role" name="RoleId">
                                         <option value="1">Admin</option>
-                                        <option value="2">Karyawan</option>
                                         <option value="3">Pelanggan</option>
                                     </select>
                                 </div>
@@ -187,7 +183,7 @@ if (mysqli_num_rows($query) < 1) {
 
                                 <!-- Submit button -->
                                 <p>
-                                <button type="submit" class="btn btn-primary mt-4" value="Simpan" name="simpan">Submit</button>
+                                    <button type="submit" class="btn btn-primary mt-4" value="Simpan" name="simpan">Submit</button>
                                     <a href="./user.php"></a>
                                 </p>
                             </form>

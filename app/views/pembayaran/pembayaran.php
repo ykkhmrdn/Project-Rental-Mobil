@@ -51,7 +51,7 @@ if (isset($_GET['NoPlat']) && isset($_GET['IdType'])) {
             // Execute query
             if (mysqli_query($db, $queryInsert)) {
                 // Configure Midtrans
-                \Midtrans\Config::$serverKey = 'localhost';
+                \Midtrans\Config::$serverKey = 'Mid-server-tlYAkZL6FGWDVTOSxk_id01I';
                 \Midtrans\Config::$isProduction = false;
 
                 // Create a new transaction in Midtrans
@@ -148,9 +148,16 @@ if (isset($_GET['NoPlat']) && isset($_GET['IdType'])) {
                 <input type="text" class="form-control" id="namaPengirim" name="namaPengirim" required>
             </div>
             <div class="mb-3">
-                <label for="bankPengirim" class="form-label">Bank Pengirim</label>
-                <input type="text" class="form-control" id="bankPengirim" name="bankPengirim" required>
-            </div>
+            <label for="metodePembayaran" class="form-label">Metode Pembayaran</label>
+            <select class="form-control" id="metodePembayaran" name="metodePembayaran" required>
+                <option value="">Pilih Metode Pembayaran</option>
+                <option value="bni">Transfer Bank BNI</option>
+                <option value="bri">Transfer Bank BRI</option>
+                <option value="mandiri">Transfer Bank Mandiri</option>
+                <option value="permata">Transfer Bank Permata</option>
+                <option value="gopay">GoPay</option>
+            </select>
+        </div>
             <div class="mb-3">
                 <label for="tanggalPembayaran" class="form-label">Tanggal Pembayaran</label>
                 <input type="date" class="form-control" id="tanggalPembayaran" name="tanggalPembayaran" required>

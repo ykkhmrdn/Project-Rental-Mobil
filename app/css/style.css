@@ -34,11 +34,35 @@ h1 {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+  margin-right: 5px;
 }
 
 .btn-primary:hover {
   background-color: #D36E1F;
 }
+
+.btn-danger {
+  background-color: #CD1818;
+  border: none;
+  border-radius: 4px;
+  color: #FFF;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.btn-success {
+  background-color: #22A699;
+  border: none;
+  border-radius: 4px;
+  color: #FFF;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
 
 
 /* Custom styles for the navbar */

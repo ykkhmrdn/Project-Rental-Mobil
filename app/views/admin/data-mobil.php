@@ -56,6 +56,14 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Sidebar items -->
                         <li class="nav-item">
+                            <a href="./dashboard.php" class="nav-link">
+                                <p>
+                                    <img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="Javaelltrans Logo" height="30px" width="200px">
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="./edit-mobil.php" class="nav-link">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-car-front" viewBox="0 0 16 16">
                                     <path d="M4 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm10 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2H6ZM4.862 4.276 3.906 6.19a.51.51 0 0 0 .497.731c.91-.073 2.35-.17 3.597-.17 1.247 0 2.688.097 3.597.17a.51.51 0 0 0 .497-.731l-.956-1.913A.5.5 0 0 0 10.691 4H5.309a.5.5 0 0 0-.447.276Z" />
@@ -88,6 +96,7 @@
             </div>
             <!-- End sidebar -->
         </aside>
+        <!-- End Main Sidebar Container -->
         <!-- End Main Sidebar Container -->
 
 
@@ -158,7 +167,7 @@
                                                 echo "<td>
                                                     <div class='btn-group' role='group'>
                                                         <a href='edit-mobil.php?id=" . $viewmobil['id'] . "' class='btn btn-sm btn-primary'>Edit</a>
-                                                        <a href='hapus-mobil.php?id=" . $viewmobil['id'] . "' class='btn btn-sm btn-danger'>Delete</a>
+                                                        <a href='hapus-mobil.php?id=" . $viewmobil['id'] . "' class='btn btn-sm btn-danger' onclick='return confirmDelete()'>Delete</a>
                                                     </div>
                                                 </td>";
 
@@ -223,6 +232,12 @@
 
     <!-- AdminLTE App -->
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1.0/dist/js/adminlte.min.js"></script>
+
+    <script>
+        function confirmDelete() {
+            return confirm("Harap konfirmasi jika ingin menghapus mobil tersebut!");
+        }
+    </script>
 </body>
 
 </html>

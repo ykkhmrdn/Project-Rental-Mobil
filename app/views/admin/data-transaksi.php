@@ -2,10 +2,20 @@
 // Include database connection file
 include_once '/xampp/htdocs/project-rental-mobil/app/config/database.php';
 
-// Fetch transactions from the database
-$sql = "SELECT * FROM viewriwayattransaksi";
+// Set the default sorting column and order
+$sortColumn = isset($_GET['sort']) ? $_GET['sort'] : 'NoTransaksi';
+$sortOrder = 'ASC';
+
+// Toggle the sort order if the current column is selected for sorting again
+if (isset($_GET['sort']) && $_GET['sort'] === $sortColumn) {
+    $sortOrder = $sortOrder === 'ASC' ? 'DESC' : 'ASC';
+}
+
+// Fetch transactions from the database with the specified sorting
+$sql = "SELECT * FROM viewriwayattransaksi ORDER BY $sortColumn $sortOrder";
 $query = mysqli_query($db, $sql);
 ?>
+
 
 
 <!DOCTYPE html>
@@ -46,7 +56,7 @@ $query = mysqli_query($db, $sql);
 
                 <!-- Right-aligned navbar links -->
                 <ul class="navbar-nav ml-auto">
-                   
+
                     <li class="nav-item">
                         <a href="../home/index.php" class="nav-link btn btn-primary">Log Out</a>
                     </li>
@@ -63,6 +73,14 @@ $query = mysqli_query($db, $sql);
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Sidebar items -->
+                        <li class="nav-item">
+                            <a href="./dashboard.php" class="nav-link">
+                                <p>
+                                    <img src="https://localhost/project-rental-mobil/app/img/assets/logo.png" alt="Javaelltrans Logo" height="30px" width="200px">
+                                </p>
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             <a href="./edit-mobil.php" class="nav-link">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-car-front" viewBox="0 0 16 16">
@@ -117,7 +135,10 @@ $query = mysqli_query($db, $sql);
                                     <thead>
                                         <tr>
                                             <th>No Transaksi</th>
-                                            <th>NIK</th>
+                                            <th>
+                                                <a href="?sort=nik">NIK <?php echo $sortColumn === 'nik' ? ($sortOrder === 'ASC' ? '<i class="bi bi-arrow-up"></i>' : '<i class="bi bi-arrow-down"></i>') : ''; ?></a>
+                                            </th>
+
                                             <th>Nama Type</th>
                                             <th>Tanggal Pesan</th>
                                             <th>Tanggal Pinjam</th>
@@ -127,6 +148,7 @@ $query = mysqli_query($db, $sql);
                                             <th>Action</th>
                                         </tr>
                                     </thead>
+
                                     <tbody>
                                         <?php
                                         if ($query->num_rows > 0) {
@@ -143,7 +165,7 @@ $query = mysqli_query($db, $sql);
                                                 echo "<td>
                                                         <div class='btn-group' role='group'>
                                                             <a href='./edit-transaksi.php?NoTransaksi=" . $transaksi['NoTransaksi'] . "' class='btn btn-sm btn-primary'>Edit</a>
-                                                            <a href='hapus-transaksi.php?NoTransaksi=" . $transaksi['NoTransaksi'] . "' class='btn btn-sm btn-danger'>Delete</a>
+                                                            <a href='hapus-transaksi.php?NoTransaksi=" . $transaksi['NoTransaksi'] . "' class='btn btn-sm btn-danger' onclick='return confirmDelete()'>Delete</a>
                                                         </div>
                                                     </td>";
                                                 echo "</tr>";
@@ -205,6 +227,12 @@ $query = mysqli_query($db, $sql);
 
     <!-- AdminLTE App -->
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1.0/dist/js/adminlte.min.js"></script>
+
+    <script>
+        function confirmDelete() {
+            return confirm("Harap konfirmasi jika ingin menghapus transaksi tersebut!");
+        }
+    </script>
 </body>
 
 </html>
